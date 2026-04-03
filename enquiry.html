@@ -1930,17 +1930,16 @@
 </script>
 
 <!-- ══════════════════════════════════════════
-     AI ADMISSION COUNSELLOR CHATBOT
+     RULE-BASED ADMISSION COUNSELLOR CHATBOT
 ══════════════════════════════════════════ -->
 
 <style>
-/* ── FAB BUTTON ── */
 #chatFab {
   position: fixed; bottom: 28px; right: 28px; z-index: 9999;
   width: 62px; height: 62px; border-radius: 50%;
   background: linear-gradient(135deg, #2563eb, #0891b2);
   border: none; cursor: pointer;
-  box-shadow: 0 6px 30px rgba(37,99,235,0.5), 0 0 0 0 rgba(37,99,235,0.4);
+  box-shadow: 0 6px 30px rgba(37,99,235,0.5);
   display: flex; align-items: center; justify-content: center;
   font-size: 26px; transition: transform 0.3s;
   animation: fabPulse 3s infinite;
@@ -1958,52 +1957,41 @@
   0%,100%  { box-shadow: 0 6px 30px rgba(37,99,235,0.5), 0 0 0 0 rgba(37,99,235,0.3); }
   50%      { box-shadow: 0 6px 30px rgba(37,99,235,0.5), 0 0 0 12px rgba(37,99,235,0); }
 }
-
-/* ── CHAT WINDOW ── */
 #chatWindow {
   position: fixed; bottom: 106px; right: 28px; z-index: 9998;
-  width: 390px; height: 580px;
+  width: 390px; height: 560px;
   background: #0d111d;
   border: 1px solid rgba(59,130,246,0.25);
   border-radius: 20px;
   display: flex; flex-direction: column;
-  box-shadow: 0 24px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6);
   transform: scale(0.85) translateY(20px);
   opacity: 0; pointer-events: none;
   transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
   overflow: hidden;
 }
-#chatWindow.open {
-  transform: scale(1) translateY(0);
-  opacity: 1; pointer-events: all;
-}
-
-/* ── CHAT HEADER ── */
+#chatWindow.open { transform: scale(1) translateY(0); opacity: 1; pointer-events: all; }
 .chat-header {
   background: linear-gradient(135deg, #1a2744 0%, #0f1a2e 100%);
   border-bottom: 1px solid rgba(59,130,246,0.15);
   padding: 16px 18px;
-  display: flex; align-items: center; gap: 12px;
-  flex-shrink: 0;
+  display: flex; align-items: center; gap: 12px; flex-shrink: 0;
 }
 .chat-avatar {
   width: 42px; height: 42px; border-radius: 50%;
   background: linear-gradient(135deg, #2563eb, #06b6d4);
   display: flex; align-items: center; justify-content: center;
   font-size: 20px; flex-shrink: 0;
-  box-shadow: 0 0 16px rgba(37,99,235,0.4);
-  position: relative;
+  box-shadow: 0 0 16px rgba(37,99,235,0.4); position: relative;
 }
 .chat-avatar::after {
-  content: '';
-  position: absolute; bottom: 1px; right: 1px;
+  content: ''; position: absolute; bottom: 1px; right: 1px;
   width: 10px; height: 10px; border-radius: 50%;
   background: #10b981; border: 2px solid #0d111d;
 }
 .chat-meta { flex: 1; }
 .chat-meta h4 { font-size: 14px; font-weight: 600; color: #fff; }
-.chat-meta p  { font-size: 11px; color: #64748b; margin-top: 2px; }
-.chat-status  { display: flex; align-items: center; gap: 5px; }
+.chat-status { display: flex; align-items: center; gap: 5px; }
 .chat-status-dot { width: 6px; height: 6px; border-radius: 50%; background: #10b981; animation: pulse 2s infinite; }
 .chat-status span { font-size: 11px; color: #10b981; }
 .chat-close {
@@ -2013,8 +2001,6 @@
   transition: all 0.2s;
 }
 .chat-close:hover { background: rgba(255,255,255,0.12); color: #fff; }
-
-/* ── QUICK SUGGESTIONS ── */
 .quick-bar {
   padding: 10px 14px 0;
   display: flex; gap: 7px; flex-wrap: nowrap;
@@ -2022,73 +2008,47 @@
 }
 .quick-bar::-webkit-scrollbar { display: none; }
 .quick-chip {
-  background: rgba(59,130,246,0.1);
-  border: 1px solid rgba(59,130,246,0.2);
+  background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.2);
   border-radius: 100px; padding: 5px 12px;
   font-size: 11.5px; color: #93c5fd; white-space: nowrap;
   cursor: pointer; transition: all 0.2s; font-family: 'DM Sans',sans-serif;
 }
-.quick-chip:hover {
-  background: rgba(59,130,246,0.2); border-color: rgba(59,130,246,0.4);
-  color: #bfdbfe;
-}
-
-/* ── MESSAGES AREA ── */
+.quick-chip:hover { background: rgba(59,130,246,0.2); color: #bfdbfe; }
 .chat-messages {
   flex: 1; overflow-y: auto; padding: 14px 16px;
-  display: flex; flex-direction: column; gap: 14px;
-  scroll-behavior: smooth;
+  display: flex; flex-direction: column; gap: 14px; scroll-behavior: smooth;
 }
 .chat-messages::-webkit-scrollbar { width: 3px; }
 .chat-messages::-webkit-scrollbar-thumb { background: rgba(59,130,246,0.2); border-radius: 3px; }
-
-/* Message bubbles */
 .msg { display: flex; gap: 10px; animation: msgIn 0.3s ease; max-width: 100%; }
 .msg.user { flex-direction: row-reverse; }
-@keyframes msgIn {
-  from { opacity:0; transform: translateY(8px); }
-  to   { opacity:1; transform: translateY(0); }
-}
-
+@keyframes msgIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
 .msg-icon {
   width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center; font-size: 14px;
-  margin-top: 2px;
+  display: flex; align-items: center; justify-content: center; font-size: 14px; margin-top: 2px;
 }
 .msg.bot .msg-icon { background: linear-gradient(135deg,#2563eb,#06b6d4); }
 .msg.user .msg-icon { background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.25); }
-
 .msg-bubble {
   max-width: 78%; padding: 11px 14px; border-radius: 14px;
   font-size: 13.5px; line-height: 1.65; word-break: break-word;
 }
 .msg.bot .msg-bubble {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
   color: #e2e8f0; border-radius: 4px 14px 14px 14px;
 }
 .msg.user .msg-bubble {
   background: linear-gradient(135deg, #1d4ed8, #1e40af);
   color: #fff; border-radius: 14px 4px 14px 14px;
 }
-
-/* Formatted bot message */
-.msg-bubble strong { color: #93c5fd; font-weight: 600; }
-.msg-bubble ul { margin: 6px 0 4px 14px; }
+.msg-bubble strong { color: #93c5fd; }
+.msg-bubble ul { margin: 6px 0 4px 16px; }
 .msg-bubble li { margin-bottom: 3px; color: #cbd5e1; }
-.msg-bubble .tag {
-  display: inline-block; background: rgba(59,130,246,0.15);
-  border: 1px solid rgba(59,130,246,0.25); border-radius: 4px;
-  padding: 1px 7px; font-size: 11.5px; color: #93c5fd; margin: 2px 2px;
-}
 .msg-time { font-size: 10px; color: #475569; margin-top: 5px; text-align: right; }
-
-/* Typing indicator */
 .typing-bubble {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 4px 14px 14px 14px;
-  padding: 12px 16px; display: flex; gap: 5px; align-items: center;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 4px 14px 14px 14px; padding: 12px 16px;
+  display: flex; gap: 5px; align-items: center;
 }
 .typing-dot {
   width: 7px; height: 7px; border-radius: 50%;
@@ -2098,42 +2058,29 @@
 .typing-dot:nth-child(3) { animation-delay: 0.4s; }
 @keyframes typingBounce {
   0%,60%,100% { transform: translateY(0); opacity:0.4; }
-  30%          { transform: translateY(-6px); opacity:1; }
+  30% { transform: translateY(-6px); opacity:1; }
 }
-
-/* ── INPUT AREA ── */
-.chat-input-wrap {
-  padding: 12px 14px 16px; border-top: 1px solid rgba(255,255,255,0.06);
-  flex-shrink: 0;
-}
+.chat-input-wrap { padding: 12px 14px 16px; border-top: 1px solid rgba(255,255,255,0.06); flex-shrink: 0; }
 .chat-input-row {
   display: flex; gap: 8px; align-items: flex-end;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 14px; padding: 8px 10px 8px 14px;
-  transition: border-color 0.2s;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 14px; padding: 8px 10px 8px 14px; transition: border-color 0.2s;
 }
 .chat-input-row:focus-within { border-color: rgba(59,130,246,0.4); }
 #chatInput {
   flex: 1; background: none; border: none; outline: none;
   color: #e2e8f0; font-family: 'DM Sans',sans-serif; font-size: 13.5px;
-  resize: none; max-height: 100px; line-height: 1.5;
-  scrollbar-width: none;
+  resize: none; max-height: 100px; line-height: 1.5; scrollbar-width: none;
 }
 #chatInput::placeholder { color: #475569; }
-#chatInput::-webkit-scrollbar { display: none; }
 #chatSend {
   width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
   background: linear-gradient(135deg,#2563eb,#1d4ed8);
   border: none; cursor: pointer; color: #fff; font-size: 16px;
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center; transition: all 0.2s;
 }
-#chatSend:hover { transform: scale(1.08); box-shadow: 0 4px 12px rgba(37,99,235,0.4); }
-#chatSend:disabled { opacity:0.4; cursor:not-allowed; transform:none; }
+#chatSend:hover { transform: scale(1.08); }
 .chat-hint { font-size: 10.5px; color: #334155; text-align: center; margin-top: 8px; }
-
-/* Mobile */
 @media (max-width:480px) {
   #chatWindow { width: calc(100vw - 24px); right: 12px; bottom: 92px; height: 72vh; }
   #chatFab { bottom: 16px; right: 16px; }
@@ -2141,138 +2088,1046 @@
 </style>
 
 <!-- FAB -->
-<button id="chatFab" onclick="toggleChat()" title="Ask our AI Counsellor">
+<button id="chatFab" onclick="toggleChat()" title="Ask our Counsellor">
   🎓
   <div class="fab-badge" id="fabBadge">1</div>
 </button>
 
 <!-- CHAT WINDOW -->
 <div id="chatWindow">
-  <!-- Header -->
   <div class="chat-header">
     <div class="chat-avatar">🤖</div>
     <div class="chat-meta">
-      <h4>Arya — AI Counsellor</h4>
+      <h4>Arya — Admission Counsellor</h4>
       <div class="chat-status"><div class="chat-status-dot"></div><span>Online · IEC Admissions</span></div>
     </div>
     <button class="chat-close" onclick="toggleChat()">✕</button>
   </div>
 
-  <!-- Quick chips -->
-  <div class="quick-bar" id="quickBar">
+  <div class="quick-bar">
     <div class="quick-chip" onclick="sendQuick(this)">📋 Eligibility</div>
     <div class="quick-chip" onclick="sendQuick(this)">💰 Fee Structure</div>
-    <div class="quick-chip" onclick="sendQuick(this)">🏆 Placements</div>
-    <div class="quick-chip" onclick="sendQuick(this)">📅 Last Date</div>
-    <div class="quick-chip" onclick="sendQuick(this)">🏗️ Hostel</div>
     <div class="quick-chip" onclick="sendQuick(this)">🎓 Scholarships</div>
-    <div class="quick-chip" onclick="sendQuick(this)">⚙️ CSE vs ECE</div>
+    <div class="quick-chip" onclick="sendQuick(this)">🏆 Placements</div>
+    <div class="quick-chip" onclick="sendQuick(this)">⚙️ Branches</div>
+    <div class="quick-chip" onclick="sendQuick(this)">🏠 Hostel</div>
+    <div class="quick-chip" onclick="sendQuick(this)">📅 Last Date</div>
+    <div class="quick-chip" onclick="sendQuick(this)">📄 Documents</div>
     <div class="quick-chip" onclick="sendQuick(this)">📡 JEE Cutoff</div>
+    <div class="quick-chip" onclick="sendQuick(this)">💻 About CSE</div>
+    <div class="quick-chip" onclick="sendQuick(this)">🤖 About AI ML</div>
+    <div class="quick-chip" onclick="sendQuick(this)">⚖️ CSE vs ECE</div>
+    <div class="quick-chip" onclick="sendQuick(this)">🔐 Cyber Security</div>
+    <div class="quick-chip" onclick="sendQuick(this)">📋 Admission Process</div>
+    <div class="quick-chip" onclick="sendQuick(this)">🏦 Education Loan</div>
+    <div class="quick-chip" onclick="sendQuick(this)">🎓 Lateral Entry</div>
+    <div class="quick-chip" onclick="sendQuick(this)">📞 Contact</div>
+    <div class="quick-chip" onclick="sendQuick(this)">🏫 Campus Facilities</div>
+    <div class="quick-chip" onclick="sendQuick(this)">🌍 NRI Admission</div>
+    <div class="quick-chip" onclick="sendQuick(this)">🚌 Transport</div>
   </div>
 
-  <!-- Messages -->
   <div class="chat-messages" id="chatMessages"></div>
 
-  <!-- Input -->
   <div class="chat-input-wrap">
     <div class="chat-input-row">
       <textarea id="chatInput" placeholder="Ask anything about admissions…" rows="1"
         oninput="autoResize(this)" onkeydown="chatKeyDown(event)"></textarea>
       <button id="chatSend" onclick="sendMessage()">➤</button>
     </div>
-    <div class="chat-hint">Powered by Claude AI · Ask anything about IEC Engineering</div>
+    <div class="chat-hint">IEC Smart Counsellor · No internet needed</div>
   </div>
 </div>
 
 <script>
 // ══════════════════════════════════════════
-//  CHATBOT ENGINE
+//  RULE-BASED CHATBOT — NO API / NO INTERNET
 // ══════════════════════════════════════════
 
-const SYSTEM_PROMPT = `You are Arya, the friendly and knowledgeable AI Admission Counsellor for IEC (Institute of Engineering & Computing). You help prospective B.Tech students and their parents with all admission-related queries.
-
-About IEC:
-- NAAC A++ Accredited autonomous institution
-- Offers 12 B.Tech branches: CSE, CSE (AI & ML), Data Science, IT, ECE, EEE, Mechanical, Civil, Chemical, Biotech, Aerospace, Cyber Security
-- 4-year full-time B.Tech programme
-- Lateral entry (2nd year) available for diploma holders
-- Intake: 2025–26 admissions open
-
-Fee Structure:
-- CSE / CSE-AI / DS / IT: ₹1,60,000 per year
-- ECE / EEE: ₹1,40,000 per year
-- ME / CE / ChE / BIO / AERO / Cyber: ₹1,20,000 per year
-- Hostel: ₹90,000–₹1,20,000 per year (room type dependent)
-- One-time admission fee: ₹25,000
-
-Eligibility:
-- 10+2 with PCM, minimum 60% aggregate (50% for SC/ST/OBC)
-- Valid JEE Main / KCET / MHT-CET / COMEDK score preferred
-- Lateral entry: Diploma with min 60% — direct 2nd year admission
-
-Scholarships:
-- Merit Scholarship: Top 10% PCM scorers — up to 50% fee waiver
-- Need-based: Family income < ₹3L — up to 30% waiver
-- SC/ST/OBC: Government scholarship schemes applicable
-- Sports: National/State level — up to ₹30,000/year
-- Defence ward: 20% concession
-
-Key Dates 2025–26:
-- Application deadline: 30 June 2025
-- Entrance exam / counselling: July 2025
-- Document verification: July–August 2025
-- Classes begin: 1st August 2025
-
-Placements:
-- 98% placement rate; avg package ₹7.2 LPA, highest ₹42 LPA
-- Top recruiters: TCS, Infosys, Wipro, Amazon, Bosch, L&T, Capgemini, Accenture, ISRO (internship)
-- Dedicated Training & Placement cell
-
-Campus facilities:
-- Wi-Fi campus, 24×7 library, advanced labs, sports complex
-- Boys & girls hostels (single/double/triple rooms)
-- Cafeteria, medical centre, transport, gym
-
-Contact:
-- Admissions helpline: 1800-XXX-XXXX (toll-free)
-- Email: admissions@iec.edu.in
-- Address: IEC Campus, Tech Park Road, Bengaluru - 560001
-
-Instructions:
-- Be warm, helpful, and encouraging
-- Give concise, well-structured answers using bullet points or short paragraphs
-- Use emojis sparingly to keep tone friendly
-- If asked something outside your knowledge, suggest contacting the admissions office
-- Never make up specific numbers not given above; say "please contact admissions for exact details"
-- If a student seems unsure between branches, ask about their interests and guide them
-- Always end with a follow-up question or offer to help more`;
-
-let chatHistory = [];
 let chatOpen = false;
-let isTyping = false;
+
+// ─────────────────────────────────────────
+//  MEGA KNOWLEDGE BASE
+// ─────────────────────────────────────────
+const KB = [
+
+  // ── GREETINGS ──
+  {
+    keys:['hello','hi ','hey','good morning','good afternoon','good evening','namaste','hai','helo','howdy','sup','hii','hiii','greet','start','begin'],
+    ans:`👋 **Hello! Welcome to IEC Admissions!**
+
+I'm **Arya**, your smart admission counsellor. I can instantly answer questions about:
+
+• 📋 Eligibility & admission process
+• 💰 Fee structure & scholarships
+• 🏆 Placements & career scope
+• ⚙️ Branch selection & comparisons
+• 🏠 Hostel & campus facilities
+• 📅 Important dates & documents
+• 🎓 JEE / KCET / entrance exam cutoffs
+• 🔬 Internships & higher studies
+
+Just **type your question** or tap a quick button above! 😊`
+  },
+
+  // ── ELIGIBILITY ──
+  {
+    keys:['eligib','qualif','requir','criteria','pcm','minimum mark','cutoff mark','admission requir','who can apply','can i apply','am i eligible','12th pass','10+2'],
+    ans:`📋 **Eligibility Criteria for B.Tech at IEC:**
+
+**Basic Requirements:**
+• Passed 10+2 with **Physics, Chemistry & Maths (PCM)**
+• Minimum **60% aggregate** in PCM subjects
+• 50% for **SC / ST / OBC** candidates
+• Valid entrance exam score is preferred
+
+**Entrance Exams Accepted:**
+• JEE Main, JEE Advanced
+• KCET (Karnataka), COMEDK, MHT-CET
+• Management quota — no entrance exam needed
+
+**Lateral Entry (2nd Year Direct):**
+• 3-year Diploma in Engineering with **min 60%**
+• Skip 1st year — join directly in 2nd year!
+
+**Age:** No upper age limit for B.Tech admission.
+
+💡 Tell me your PCM % and I'll tell you which branch you're eligible for! 😊`
+  },
+
+  // ── FEE STRUCTURE ──
+  {
+    keys:['fee','fees','cost','tuition','charge','pay','amount','per year','yearly','annual fee','how much','total fee','fee structure','fee detail','expense'],
+    ans:`💰 **Fee Structure 2025–26 at IEC:**
+
+| Branch | Fee Per Year |
+|--------|-------------|
+| CSE / AI-ML / Data Science / IT | **₹1,60,000** |
+| ECE / EEE | **₹1,40,000** |
+| Mechanical / Civil / Chemical | **₹1,20,000** |
+| Biotech / Aerospace / Cyber Security | **₹1,20,000** |
+
+**Additional Fees:**
+• One-time Admission Fee: **₹25,000**
+• Library & Lab Fee: **₹8,000/year**
+• Exam Fee: **₹3,500/semester**
+
+**Hostel Fees (optional):**
+• Single Room: ₹1,20,000/year
+• Double Room: ₹1,00,000/year
+• Triple Room: ₹90,000/year
+
+💡 Scholarships available — **up to 50% fee waiver** for merit students!`
+  },
+
+  // ── SCHOLARSHIP ──
+  {
+    keys:['scholarship','waiver','concession','free','discount','financial aid','stipend','fee reduction','merit','nsp','pm yasasvi','govt scheme','free seat'],
+    ans:`🎓 **Scholarships at IEC — 2025–26:**
+
+**Merit-Based:**
+• 🥇 Top 10% in PCM → **50% fee waiver**
+• 🥈 80–89% in PCM → **25% fee waiver**
+• 🥉 75–79% in PCM → **15% fee waiver**
+
+**Need-Based:**
+• Family income < ₹1.5L → **40% waiver**
+• Family income < ₹3L → **30% waiver**
+• Family income < ₹5L → **15% waiver**
+
+**Special Categories:**
+• 🏏 Sports (National/State level) → ₹30,000/year
+• 🎖️ Defence / Ex-servicemen ward → **20% concession**
+• ♿ PwD / Differently-abled → **25% waiver**
+• 👩 Girl students (First year) → **10% concession**
+
+**Government Schemes Accepted:**
+• NSP (National Scholarship Portal)
+• PM-YASASVI, Karnataka Rajyotsava, Post-Matric SC/ST
+
+📌 Apply for scholarship **at the time of admission** with income & category certificates.`
+  },
+
+  // ── PLACEMENTS ──
+  {
+    keys:['placement','job','package','salary','lpa','recruit','campus','hire','company','offer letter','placed','employment','career','work','industry'],
+    ans:`🏆 **Placement Statistics — IEC 2024:**
+
+• ✅ **Placement Rate: 98%**
+• 💰 Average Package: **₹7.2 LPA**
+• 🚀 Highest Package: **₹42 LPA** (Amazon)
+• 📦 Total Offers: 1,200+ in 2024
+
+**Top Recruiting Companies:**
+• IT/Software: TCS, Infosys, Wipro, Cognizant, Capgemini, Accenture, HCL
+• Product: Amazon, Flipkart, Zoho, Freshworks
+• Core/Hardware: Bosch, L&T, BHEL, ABB, Siemens
+• Government: ISRO (internship), DRDO, BEL, ONGC
+
+**Branch-wise Average Packages:**
+• CSE / AI-ML: ₹9–14 LPA
+• IT / Data Science: ₹8–12 LPA
+• ECE: ₹6–9 LPA
+• EEE: ₹5–8 LPA
+• Mechanical / Civil: ₹4–7 LPA
+
+**Support Provided:**
+• Aptitude & coding training from 2nd year
+• Mock interviews, resume building, soft skills
+• Dedicated T&P cell with 50+ company tie-ups`
+  },
+
+  // ── HOSTEL ──
+  {
+    keys:['hostel','accommodat','room','stay','pg','dormi','mess','food','canteen','boys hostel','girls hostel','warden','curfew','in time','out time','room type'],
+    ans:`🏠 **Hostel Facilities at IEC:**
+
+**Separate Hostels for Boys & Girls — Fully Secured**
+
+**Room Options & Fees:**
+• 🛏️ Single Room: **₹1,20,000/year** (AC available)
+• 🛏️🛏️ Double Sharing: **₹1,00,000/year**
+• 🛏️🛏️🛏️ Triple Sharing: **₹90,000/year**
+
+**Included in Hostel Fee:**
+• 3 meals/day (breakfast, lunch, dinner)
+• 24×7 Wi-Fi, hot water, laundry
+• CCTV surveillance, security guards
+• Study room, indoor games, TV room
+• Warden on duty round the clock
+
+**Rules:**
+• Girls hostel in-time: **9:00 PM**
+• Boys hostel in-time: **10:30 PM**
+• Parents can visit on weekends (10AM–5PM)
+• Mobile phones allowed in rooms
+
+📌 Hostel allotment = **first-come, first-served**. Apply early!`
+  },
+
+  // ── IMPORTANT DATES ──
+  {
+    keys:['last date','deadline','date','when','close','open','form date','apply by','admission open','start date','class begin','session start','academic calendar'],
+    ans:`📅 **Important Dates — 2025–26 Admission Calendar:**
+
+• 📝 Application Portal Opens: **1 March 2025**
+• ⏰ Application Deadline: **30 June 2025**
+• 📋 Merit List / Counselling Round 1: **10 July 2025**
+• 📋 Counselling Round 2 (if seats available): **25 July 2025**
+• 📄 Document Verification: **July 15 – August 5, 2025**
+• 💰 Fee Payment Deadline: **10 August 2025**
+• 🎓 Orientation Programme: **14 August 2025**
+• 📚 Classes Begin: **18 August 2025**
+
+**Lateral Entry Dates:**
+• Application: April – July 2025
+• Admission: August 2025
+
+⚠️ **Don't wait!** Seats in CSE and AI branches fill up very fast.`
+  },
+
+  // ── BRANCHES ──
+  {
+    keys:['branch','course','programme','stream','department','which branch','all branch','list of branch','available branch','12 branch'],
+    ans:`⚙️ **All Engineering Branches at IEC (12 Programmes):**
+
+**Computer & IT Streams:**
+• 💻 **CSE** — Computer Science Engineering
+• 🤖 **CSE (AI & ML)** — Artificial Intelligence & Machine Learning
+• 📊 **Data Science** — Big Data, Analytics, Python
+• 🌐 **IT** — Information Technology
+• 🔐 **Cyber Security** — Ethical Hacking, Network Security
+
+**Electronics Streams:**
+• 📡 **ECE** — Electronics & Communication
+• ⚡ **EEE** — Electrical & Electronics
+
+**Core Engineering:**
+• 🔧 **Mechanical** — Design, Manufacturing, Automobile
+• 🏗️ **Civil** — Construction, Structural, Environmental
+• ⚗️ **Chemical** — Process, Petrochemical, Pharma
+• 🧬 **Biotech & Biomedical** — Genetics, Medical Devices
+• ✈️ **Aerospace** — Aircraft, Propulsion, Avionics
+
+💡 **Which interests you?** I can tell you more about any specific branch — just ask!`
+  },
+
+  // ── CSE BRANCH INFO ──
+  {
+    keys:['about cse','cse details','computer science details','what is cse','cse branch','cse course','cse syllabus','cse scope'],
+    ans:`💻 **CSE — Computer Science Engineering at IEC:**
+
+**What you'll study:**
+• Programming (C, C++, Java, Python)
+• Data Structures & Algorithms
+• Operating Systems, DBMS, Computer Networks
+• Web Development, Cloud Computing
+• Software Engineering, AI/ML basics
+
+**Career Options:**
+• Software Developer / Engineer
+• Full Stack Developer
+• Data Scientist / Analyst
+• DevOps / Cloud Engineer
+• Product Manager
+
+**Top Recruiters for CSE:**
+TCS, Infosys, Wipro, Amazon, Google, Microsoft, Zoho, Freshworks
+
+**Average Package:** ₹8–14 LPA
+**Highest Package (2024):** ₹42 LPA
+
+**Intake:** 180 seats
+**Duration:** 4 years (B.Tech)
+
+CSE is the **most sought-after** branch at IEC! 🔥`
+  },
+
+  // ── AI/ML BRANCH ──
+  {
+    keys:['ai ml','artificial intelligence','machine learning','ai branch','aiml','ai course','ai scope','ai and ml'],
+    ans:`🤖 **CSE (AI & ML) at IEC — The Future Branch!**
+
+**What you'll study:**
+• Python, R Programming
+• Machine Learning & Deep Learning
+• Neural Networks, NLP, Computer Vision
+• Data Mining, Big Data (Hadoop, Spark)
+• Robotics & Automation
+
+**Career Options:**
+• AI/ML Engineer
+• Data Scientist
+• Research Scientist
+• NLP Engineer
+• AI Product Manager
+
+**Why choose AI & ML?**
+• 🔥 Fastest growing field globally
+• 💰 Avg package: ₹12–20 LPA
+• 🌍 Global job opportunities
+• 🚀 Future-proof career
+
+**Top Recruiters:** Google, Amazon, OpenAI-backed startups, Microsoft, NVIDIA
+
+**Intake:** 60 seats (limited!)
+📌 Very high demand — apply early! 🤖`
+  },
+
+  // ── ECE BRANCH ──
+  {
+    keys:['ece detail','about ece','electronics communication','ece course','ece scope','ece syllabus','ece branch info'],
+    ans:`📡 **ECE — Electronics & Communication at IEC:**
+
+**What you'll study:**
+• Electronic Circuits & Devices
+• Digital Signal Processing
+• Embedded Systems & IoT
+• VLSI Design, Microprocessors
+• Communication Systems (4G/5G)
+
+**Career Options:**
+• Embedded Systems Engineer
+• VLSI Design Engineer
+• Telecom Engineer
+• IoT Developer
+• RF/Antenna Engineer
+
+**Top Recruiters:**
+Bosch, Intel, Qualcomm, Samsung, ISRO, DRDO, BEL
+
+**Average Package:** ₹6–9 LPA
+
+💡 ECE is great if you enjoy **electronics + some coding**.
+ECE graduates can also switch to IT companies easily!`
+  },
+
+  // ── MECHANICAL BRANCH ──
+  {
+    keys:['mechanical','mech branch','mechanical scope','about mechanical','mech detail','mech engineer'],
+    ans:`🔧 **Mechanical Engineering at IEC:**
+
+**What you'll study:**
+• Engineering Drawing & CAD/CAM
+• Thermodynamics, Fluid Mechanics
+• Manufacturing Technology
+• Machine Design, Robotics
+• Automobile Engineering
+
+**Career Options:**
+• Design Engineer (CAD/CAM)
+• Production / Manufacturing Engineer
+• Automobile Engineer
+• R&D Engineer
+• GATE → PSU (ONGC, NTPC, BHEL)
+
+**Top Recruiters:**
+L&T, TATA Motors, Mahindra, Bosch, Maruti, BHEL, HAL
+
+**Average Package:** ₹4.5–7 LPA
+
+💡 Best for those who love **machines, design & manufacturing!**`
+  },
+
+  // ── CIVIL BRANCH ──
+  {
+    keys:['civil','civil branch','about civil','civil scope','civil engineer','construction'],
+    ans:`🏗️ **Civil Engineering at IEC:**
+
+**What you'll study:**
+• Structural Analysis & Design
+• Construction Technology & Management
+• Geotechnical Engineering
+• Environmental & Water Resources
+• Transportation Engineering (Roads, Bridges)
+
+**Career Options:**
+• Structural Engineer
+• Site Engineer / Project Manager
+• Urban Planner
+• Government jobs (PWD, NHAI, Railways)
+• GATE → IRSE, CPWD
+
+**Average Package:** ₹4–6 LPA
+**Government Exams:** Civil services, GATE, SSC JE — very popular!
+
+💡 Excellent branch for **stable government job seekers!**`
+  },
+
+  // ── CYBER SECURITY ──
+  {
+    keys:['cyber','cyber security','ethical hacking','cyber scope','security branch','hacking','network security'],
+    ans:`🔐 **Cyber Security Engineering at IEC:**
+
+**What you'll study:**
+• Ethical Hacking & Penetration Testing
+• Network Security, Firewalls, VPN
+• Cryptography & Data Protection
+• Digital Forensics
+• Cloud Security, SIEM Tools
+
+**Certifications (alongside degree):**
+• CEH (Certified Ethical Hacker)
+• CompTIA Security+
+• CISSP, CISM
+
+**Career Options:**
+• Ethical Hacker / Penetration Tester
+• Cyber Security Analyst
+• SOC Analyst
+• Incident Response Engineer
+
+**Average Package:** ₹7–15 LPA
+**Demand:** One of the **fastest growing** fields — millions of job openings globally!
+
+💡 If you love **hacking and protecting systems**, this is your branch! 🔥`
+  },
+
+  // ── CSE vs ECE COMPARISON ──
+  {
+    keys:['cse vs ece','ece vs cse','cse or ece','compare cse ece','difference cse ece','which is better cse or ece','cse better','ece better'],
+    ans:`⚖️ **CSE vs ECE — Detailed Comparison:**
+
+| Factor | CSE | ECE |
+|--------|-----|-----|
+| Focus | Software & Coding | Hardware & Electronics |
+| Avg Package | ₹8–14 LPA | ₹6–9 LPA |
+| Job Options | Very High | High |
+| IT Company Hiring | ✅ Directly | ✅ After training |
+| Govt Jobs (GATE) | Moderate | High (ISRO, DRDO, BEL) |
+| Coding Required | Yes (heavy) | Yes (moderate) |
+
+**Choose CSE if:**
+• You love programming & building apps
+• You want to work at Amazon, Google, TCS
+• You are interested in AI, Web, Cloud
+
+**Choose ECE if:**
+• You love circuits, chips & hardware
+• You want to work at ISRO, Bosch, Intel
+• You're interested in VLSI, IoT, Telecom
+
+💡 **Both are excellent!** CSE has slightly higher placements currently.`
+  },
+
+  // ── CSE vs IT COMPARISON ──
+  {
+    keys:['cse vs it','it vs cse','cse or it','difference cse it','which is better cse or it'],
+    ans:`⚖️ **CSE vs IT — What's the Difference?**
+
+**CSE (Computer Science Engineering):**
+• More theoretical — algorithms, OS, architecture
+• Deeper focus on core computer science
+• Better for research & product companies
+• Avg Package: ₹8–14 LPA
+
+**IT (Information Technology):**
+• More practical — networking, databases, ERP
+• Focus on business applications & systems
+• Good for IT services & consulting
+• Avg Package: ₹7–11 LPA
+
+**In Reality:** Both get hired by the same companies!
+The syllabus overlap is 70–80%. The difference is minor.
+
+💡 **Recommendation:** If seats are available, prefer **CSE**. If not, **IT is equally good!**`
+  },
+
+  // ── JEE / ENTRANCE EXAMS ──
+  {
+    keys:['jee','jee main','jee advanced','entrance exam','kcet','comedk','mht cet','cutoff','rank','score needed','percentile','rank required'],
+    ans:`🏆 **Entrance Exam Cutoffs at IEC (2024 Reference):**
+
+**JEE Main Percentile:**
+• CSE / AI-ML: **70–80 percentile**
+• Data Science / IT / Cyber: **65–75 percentile**
+• ECE / EEE: **60–70 percentile**
+• Mechanical / Civil / Chemical: **50–60 percentile**
+
+**KCET (Karnataka CET) Rank:**
+• CSE: Under **15,000**
+• ECE: Under **25,000**
+• Mechanical / Civil: Under **40,000**
+
+**COMEDK Rank:**
+• CSE: Under **8,000**
+• ECE: Under **15,000**
+
+**Management Quota:**
+• No entrance exam required!
+• Direct admission based on 12th marks
+
+📌 Scores are approximate — contact admissions for exact cutoffs.`
+  },
+
+  // ── DOCUMENTS REQUIRED ──
+  {
+    keys:['document','certificate','marksheet','aadhar','tc','transfer','required doc','what to bring','original','submit','papers needed'],
+    ans:`📄 **Documents Required for IEC B.Tech Admission:**
+
+**Mandatory Documents:**
+• ✅ 10th Marksheet & Passing Certificate (original)
+• ✅ 12th Marksheet (original / provisional if result awaited)
+• ✅ Aadhar Card (original + 2 photocopies)
+• ✅ Passport Size Photographs — **6 copies** (white background)
+• ✅ Transfer Certificate (TC) from last school/college
+• ✅ Character / Conduct Certificate
+
+**If applicable:**
+• 🏆 JEE / KCET / COMEDK Scorecard
+• 📄 Caste Certificate (SC/ST/OBC — issued by Tahsildar)
+• 💰 Income Certificate (for scholarship)
+• 📄 Migration Certificate (if from different state board)
+• 🏅 Sports / NCC / NSS Certificate (for special quota)
+
+**Format:** Original + **2 self-attested photocopies** of each document.
+
+📌 Provisional admission given if 12th result is pending — submit originals within 30 days.`
+  },
+
+  // ── CONTACT INFORMATION ──
+  {
+    keys:['contact','phone','number','email','address','helpline','call','reach','office','location','where is','how to reach','visit','enquiry office'],
+    ans:`📞 **Contact IEC Admissions Team:**
+
+• 📞 **Helpline:** 1800-XXX-XXXX *(Toll-free)*
+• 📞 **Direct:** +91-80-XXXX-XXXX
+• 📧 **Email:** admissions@iec.edu.in
+• 💬 **WhatsApp:** +91-98XXX-XXXXX
+• 🌐 **Website:** www.iec.edu.in
+• 📍 **Address:** IEC Campus, Tech Park Road, Bengaluru – 560001
+
+**Office Hours:**
+• Monday to Saturday: **9:00 AM – 5:00 PM**
+• Sunday: Closed (except during admission season)
+
+**Walk-in Welcome:** No appointment needed during office hours.
+
+**Nearest Landmark:** 2 km from Electronic City Metro Station 🚇`
+  },
+
+  // ── CAMPUS FACILITIES ──
+  {
+    keys:['facilit','campus','lab','library','sport','gym','wifi','infrastructur','amenity','canteen','cafeteria','medical','bus','transport','auditorium','ground'],
+    ans:`🏫 **Campus Facilities at IEC:**
+
+**Academic:**
+• 📚 24×7 Digital Library — 50,000+ books, e-journals, NPTEL
+• 🔬 Advanced Labs: AI Lab, IoT Lab, Robotics Lab, VLSI Lab, CAD Lab
+• 🖥️ 1,500+ computers with latest software
+• 📶 High-speed Wi-Fi across entire campus (1 Gbps)
+
+**Sports & Recreation:**
+• 🏋️ Fully-equipped Gymnasium
+• 🏏 Cricket Ground, Football Field
+• 🏀 Basketball, Volleyball, Badminton Courts
+• 🎭 Auditorium (2,000 seating capacity)
+• 🎮 Indoor games room
+
+**Student Support:**
+• 🏥 On-campus Medical Centre with resident doctor
+• 🚌 College Bus: 20+ routes covering Bengaluru
+• 🍽️ Multi-cuisine Cafeteria (veg & non-veg)
+• 🏦 ATM on campus, Xerox & stationery shop
+• 🧘 Meditation & yoga centre`
+  },
+
+  // ── LATERAL ENTRY ──
+  {
+    keys:['lateral','diploma','polytechnic','2nd year','direct admission','iti','3 year','lateral entry'],
+    ans:`🎓 **Lateral Entry Admission at IEC:**
+
+**Who can apply?**
+• Diploma in Engineering holders (any branch)
+• B.Sc. graduates (Maths/Physics/CS)
+
+**Eligibility:**
+• Minimum **60% aggregate** in Diploma (50% for SC/ST)
+• Any state board polytechnic / ITI recognized by AICTE
+
+**Benefits:**
+• Direct **2nd year B.Tech** admission — skip 1st year!
+• Complete B.Tech in **3 years** instead of 4
+• Save ₹1.5–2L in fees!
+
+**Available Branches:**
+CSE, IT, ECE, EEE, Mechanical, Civil
+
+**Documents Needed:**
+• All semester diploma marksheets
+• Diploma passing certificate
+• TC from polytechnic
+• Aadhar + photos
+
+**Seats:** Limited to 10% of total intake.
+📌 Apply before **July 2025** — seats go fast!`
+  },
+
+  // ── ACCREDITATION / RECOGNITION ──
+  {
+    keys:['accredit','naac','rank','recognition','aicte','vtu','university','affiliated','autonomous','nba','iso','approved'],
+    ans:`🏅 **IEC Accreditation & Recognition:**
+
+• 🥇 **NAAC A++ Grade** — Highest accreditation in India
+• ✅ **AICTE Approved** — All India Council for Technical Education
+• 🎓 **Affiliated to VTU** — Visvesvaraya Technological University
+• 🏆 **NBA Accredited** — CSE, ECE, Mechanical departments
+• 🌐 **ISO 9001:2015 Certified** institution
+• 📊 Ranked **#12 in Karnataka** (NIRF Engineering Rankings 2024)
+• 🔬 **UGC Recognised** University status
+
+These accreditations mean:
+✅ Your degree is valid worldwide
+✅ Eligible for all government jobs
+✅ Can apply for GATE, GRE, GMAT with this degree`
+  },
+
+  // ── ADMISSION PROCESS ──
+  {
+    keys:['admission process','how to apply','apply process','step','procedure','how admission','admission step','how do i apply','process of admission'],
+    ans:`📋 **Step-by-Step Admission Process at IEC:**
+
+**Step 1 — Fill Enquiry Form**
+• Complete this online form (you're already on it! 🎉)
+• Our counsellor will call you within 24 hours
+
+**Step 2 — Application**
+• Fill the official application form at www.iec.edu.in
+• Pay application fee: **₹500** (non-refundable)
+
+**Step 3 — Merit List**
+• Based on 12th marks + entrance exam score
+• Published on website and sent via SMS/email
+
+**Step 4 — Counselling**
+• Come to campus (or online counselling available)
+• Choose your preferred branch
+• Bring original documents
+
+**Step 5 — Document Verification**
+• Submit original certificates + photocopies
+
+**Step 6 — Fee Payment**
+• Pay semester fee to confirm seat
+• Bank transfer / DD / Online payment accepted
+
+**Step 7 — Admission Confirmed! 🎉**
+• Get student ID, welcome kit & timetable`
+  },
+
+  // ── MANAGEMENT QUOTA ──
+  {
+    keys:['management quota','management seat','direct admission','nri quota','without jee','without entrance','quota seat','management admission'],
+    ans:`📌 **Management Quota Admission at IEC:**
+
+**What is Management Quota?**
+Seats reserved for direct admission without mandatory entrance exam scores.
+
+**Eligibility:**
+• Passed 12th with PCM — **minimum 50%**
+• No JEE / KCET score required!
+
+**Seats Available:** ~30% of total intake
+
+**Fee:** Same as regular seats (no extra fee for management quota)
+
+**Process:**
+• Apply online → Submit documents → Pay fee → Seat confirmed!
+• No entrance test, no counselling rounds
+• First-come, first-served basis
+
+**Available in all 12 branches** — even CSE and AI-ML!
+
+📞 Call **1800-XXX-XXXX** to check available management seats today!`
+  },
+
+  // ── HIGHER STUDIES / GATE ──
+  {
+    keys:['gate','higher study','mtech','ms','phd','masters','pursue','after btech','post graduate','gre','abroad study','mba after engineering'],
+    ans:`🎓 **Higher Studies after B.Tech from IEC:**
+
+**M.Tech (India):**
+• Appear for **GATE** exam (final year or after graduation)
+• Good GATE score → NITs, IITs, IISc admission
+• GATE scholarship: **₹12,400/month** stipend!
+
+**Popular GATE Branches:** CSE, ECE, ME, CE, EE
+
+**MS Abroad:**
+• GRE + TOEFL/IELTS required
+• Top destinations: USA, Germany, Canada, Australia
+• CSE/AI students get scholarships easily!
+
+**MBA:**
+• CAT / XAT / GMAT after B.Tech
+• B.Tech + MBA = very strong career combination
+
+**IEC Preparation Support:**
+• GATE coaching available on campus
+• GRE/GMAT guidance sessions
+• Study abroad cell for foreign university applications
+
+💡 About 15% of IEC students pursue higher studies each year!`
+  },
+
+  // ── INTERNSHIP ──
+  {
+    keys:['internship','intern','summer internship','industrial training','project','live project','company visit','industrial visit'],
+    ans:`💼 **Internship Opportunities at IEC:**
+
+**Mandatory Internship:**
+• 6-week internship in **3rd year summer** (mandatory)
+• Industrial training report required for degree
+
+**Where IEC Students Intern:**
+• 🚀 ISRO, DRDO, BEL, HAL (government)
+• 💻 TCS, Infosys, Wipro, Capgemini (IT companies)
+• 🏭 Bosch, Siemens, ABB (core companies)
+• 🌐 Startups via IEC startup incubation cell
+
+**Stipend Range:** ₹5,000 – ₹25,000/month
+
+**How to Get Internship:**
+• Through T&P cell (recommended companies)
+• Apply on your own (Internshala, LinkedIn)
+• IEC alumni network — very active!
+
+**Final Year Project:**
+• Industry-sponsored projects available
+• Some projects convert into **PPOs (Pre-Placement Offers)!**`
+  },
+
+  // ── CLUBS & ACTIVITIES ──
+  {
+    keys:['club','activity','cultural','fest','event','ncc','nss','extra','tech fest','sports event','hackathon','coding contest','student life'],
+    ans:`🎭 **Student Life & Activities at IEC:**
+
+**Technical Clubs:**
+• 🤖 Robotics Club — Build and compete!
+• 💻 Coding Club — Weekly contests, hackathons
+• 🔌 Electronics Club — IoT, PCB design projects
+• 🛸 Drone & Aerospace Club
+• 🔐 Cyber Security Club — CTF competitions
+
+**Cultural Clubs:**
+• 🎵 Music, Dance, Drama Club
+• 📸 Photography & Filmmaking Club
+• ✍️ Literary & Debate Club
+
+**Social Service:**
+• NCC (National Cadet Corps) unit on campus
+• NSS (National Service Scheme) chapter
+
+**Annual Events:**
+• 🎉 **INNOTECH** — National Level Tech Fest (October)
+• 🎊 **CELESTIA** — Cultural Fest (February)
+• 🏆 Inter-college Sports Meet (December)
+
+**Hackathons:** IEC teams have won ₹50,000+ prizes at national hackathons! 🏆`
+  },
+
+  // ── TRANSPORT / BUS ──
+  {
+    keys:['bus','transport','how to reach','distance','route','commute','travel','from city','from station','from airport'],
+    ans:`🚌 **Transport Facilities at IEC:**
+
+**College Bus Routes (20+ routes):**
+• Majestic / City Railway Station → IEC
+• Electronic City → IEC
+• Banashankari → IEC
+• Jayanagar → IEC
+• Whitefield → IEC
+• Hebbal → IEC *(and more)*
+
+**Bus Fee:** ₹18,000–₹22,000/year (route-dependent)
+
+**How to Reach IEC by Metro:**
+• Nearest Metro: **Electronic City Station** (Purple Line)
+• 10-minute auto/cab ride from station
+
+**By Air:**
+• Kempegowda Airport → IEC: ~1.5 hours by cab
+
+**Cab Services:**
+• Ola/Uber available 24×7 near campus
+• College cab pooling WhatsApp groups active
+
+📍 **Address:** Tech Park Road, Electronic City Phase 2, Bengaluru – 560001`
+  },
+
+  // ── RANK / COLLEGE COMPARISON ──
+  {
+    keys:['rank','ranking','nirf','best college','good college','worth it','why iec','why choose iec','is iec good','review','rating'],
+    ans:`⭐ **Why Choose IEC?**
+
+**Rankings & Recognition:**
+• 🏆 #12 in Karnataka (NIRF 2024)
+• 🥇 NAAC A++ — Highest Grade
+• 📊 Top 100 Engineering Colleges in India
+
+**Strengths:**
+• ✅ 98% Placement Rate (one of the best in Bengaluru)
+• ✅ Strong industry connections & MoUs with 100+ companies
+• ✅ Excellent campus infrastructure
+• ✅ Active alumni network (10,000+ professionals)
+• ✅ Research centres in AI, IoT, Green Energy
+
+**Student Satisfaction:**
+• 4.3/5 on Google Reviews (2,000+ reviews)
+• "Best faculty support & placement cell" — Alumni feedback
+
+**Compared to other colleges:**
+IEC offers better placements than most Tier-2 colleges in Bengaluru, at comparable fees.
+
+💡 Visit campus for an open day tour — open every Saturday! 🏫`
+  },
+
+  // ── ONLINE CLASSES / HYBRID ──
+  {
+    keys:['online','hybrid','remote','virtual class','e-learning','distance','offline','mode of study','online class'],
+    ans:`💻 **Mode of Study at IEC:**
+
+**Regular B.Tech:**
+• Fully **offline / on-campus** programme
+• Classes held Monday–Saturday (8 AM – 4 PM)
+• Labs, projects, practicals are in-person
+
+**Online Resources Available:**
+• NPTEL courses integrated in curriculum
+• LMS (Learning Management System) for notes & assignments
+• Recorded lecture access for missed classes
+• 24×7 digital library with e-books & journals
+
+**Distance / Online B.Tech:**
+• IEC does not offer full online B.Tech
+• For distance learning, consider **IGNOU or BITS Pilani (WILP)**
+
+📌 Regular (offline) mode gives the **best placement opportunities!**`
+  },
+
+  // ── LOAN / EMI ──
+  {
+    keys:['loan','emi','bank loan','education loan','hdfc','sbi','finance','installment','pay monthly','payment plan'],
+    ans:`🏦 **Education Loan Assistance at IEC:**
+
+**Bank Tie-ups:**
+• SBI — Education Loan up to ₹20 Lakhs
+• HDFC Credila — Flexible repayment
+• Axis Bank — Study Now, Pay Later schemes
+• Canara Bank — Government-backed schemes
+
+**Loan Benefits:**
+• No collateral required for loans up to ₹7.5 Lakhs
+• Repayment starts **1 year after course completion**
+• Tax benefit on interest paid (Section 80E)
+
+**IEC Support:**
+• Dedicated loan assistance cell on campus
+• Help with documentation, bank communication
+• Average processing time: 7–10 working days
+
+**EMI Option (College Direct):**
+• Semester fees can be paid in **2 installments**
+• No extra charge for split payment
+
+📞 Contact: **1800-XXX-XXXX** for loan guidance`
+  },
+
+  // ── NRI / FOREIGN STUDENTS ──
+  {
+    keys:['nri','foreign','abroad student','international','nri quota','nri seat','overseas','pio','oci'],
+    ans:`🌍 **NRI / International Student Admissions:**
+
+**NRI Quota Seats:**
+• Reserved 15% seats for NRI / PIO / OCI students
+• Separate fee structure applies
+
+**NRI Fee (Approx.):**
+• CSE / AI-ML: USD 4,000/year (~₹3.3 Lakhs)
+• Other branches: USD 3,000–3,500/year
+
+**Eligibility for NRI Quota:**
+• 10+2 or equivalent from any country
+• PCM or equivalent subjects with 60%+
+• NRI parent / relative sponsoring education
+
+**Documents Required (Extra):**
+• Passport copy (student + parent)
+• NRI status proof (visa/work permit)
+• Overseas address proof
+
+📞 NRI Admissions Desk: nri.admissions@iec.edu.in`
+  },
+
+  // ── THANK YOU / BYE ──
+  {
+    keys:['thank','thanks','ok','okay','got it','understood','great','nice','helpful','bye','goodbye','sure','noted','appreciate','awesome','perfect','done'],
+    ans:`😊 **You're welcome! Happy to help!**
+
+Feel free to come back and ask anything else. IEC's admission team is also available at:
+• 📞 **1800-XXX-XXXX** (Toll-free)
+• 📧 **admissions@iec.edu.in**
+
+**Don't forget to fill the enquiry form** on this page — our counsellor will call you within 24 hours!
+
+Best of luck with your admission journey! 🎓🚀`
+  },
+
+  // ── WHO ARE YOU (BOT IDENTITY) ──
+  {
+    keys:['who are you','what are you','your name','are you human','are you bot','are you ai','are you robot','introduce yourself'],
+    ans:`🤖 **Hi! I'm Arya!**
+
+I'm the **AI Admission Counsellor** for IEC (Institute of Engineering & Computing). I'm a smart chatbot built to help students and parents with all admission-related queries — instantly, 24×7!
+
+**I can help you with:**
+• Eligibility, fees, scholarships
+• Branch selection & comparisons
+• Placements, hostel, campus life
+• Documents, dates, admission process
+• JEE cutoffs, lateral entry, loans
+• And much more!
+
+I'm not a human, but I know everything about IEC admissions! 😊 If you need to speak to a real counsellor: 📞 **1800-XXX-XXXX**`
+  },
+
+  // ── WHAT CAN YOU DO ──
+  {
+    keys:['what can you','help me','what do you know','topics','what questions','ask you','tell me about','guide me'],
+    ans:`💡 **Here's everything I can help you with:**
+
+**Admissions:**
+Eligibility, application process, important dates, management quota, lateral entry, NRI quota
+
+**Academics:**
+All 12 branches, syllabus overview, CSE vs ECE, best branch for you, higher studies (GATE/MS/MBA)
+
+**Finance:**
+Fee structure, scholarships, education loans, EMI options, government schemes
+
+**Campus Life:**
+Hostel details, campus facilities, clubs, fests, transport, food
+
+**Placements:**
+Statistics, top companies, branch-wise packages, internships, PPOs
+
+**Exams:**
+JEE/KCET/COMEDK cutoffs, entrance exam details, exam preparation tips
+
+**Just type your question naturally** — I'll understand! 😊`
+  }
+
+];
+
+// ─────────────────────────────────────────
+//  SMART MATCHING ENGINE
+// ─────────────────────────────────────────
+function getReply(input) {
+  const q = input.toLowerCase().trim();
+
+  // Exact / best keyword match
+  let best = null, bestScore = 0;
+  for (const rule of KB) {
+    let score = 0;
+    for (const k of rule.keys) {
+      if (q.includes(k.trim())) score += k.trim().length * 2;
+    }
+    if (score > bestScore) { bestScore = score; best = rule; }
+  }
+  if (best && bestScore > 0) return best.ans;
+
+  // Word-level partial match fallback
+  const words = q.split(/\s+/).filter(w => w.length > 3);
+  best = null; bestScore = 0;
+  for (const rule of KB) {
+    let score = 0;
+    for (const k of rule.keys) {
+      for (const w of words) {
+        if (k.includes(w) || w.includes(k.trim())) score += w.length;
+      }
+    }
+    if (score > bestScore) { bestScore = score; best = rule; }
+  }
+  if (best && bestScore >= 4) return best.ans;
+
+  // Default fallback
+  return `🤔 I didn't quite catch that. Here are some things you can ask me:
+
+• **"What is the fee for CSE?"**
+• **"Am I eligible for B.Tech?"**
+• **"Tell me about placements"**
+• **"What branches are available?"**
+• **"What documents do I need?"**
+• **"Tell me about scholarships"**
+• **"What is the last date to apply?"**
+• **"How to reach the college?"**
+
+Or tap one of the quick buttons above! 😊
+If you need immediate help: 📞 **1800-XXX-XXXX**`;
+}
 
 function toggleChat() {
   chatOpen = !chatOpen;
   document.getElementById('chatWindow').classList.toggle('open', chatOpen);
   document.getElementById('fabBadge').style.display = 'none';
-  if (chatOpen && chatHistory.length === 0) {
-    setTimeout(showWelcome, 300);
-  }
+  const msgs = document.getElementById('chatMessages');
+  if (chatOpen && msgs.children.length === 0) setTimeout(showWelcome, 300);
   if (chatOpen) setTimeout(() => document.getElementById('chatInput').focus(), 400);
 }
 
 function showWelcome() {
-  const welcome = `👋 Hi! I'm **Arya**, your AI Admission Counsellor at IEC.
+  appendBotMessage(`👋 **Hi! I'm Arya, your IEC Admission Counsellor!**
 
-I can help you with:
-• Eligibility & admission process
-• Fee structure & scholarships
-• Branch selection & career scope
-• JEE / entrance exam cutoffs
-• Hostel, placements & campus life
+I can instantly answer questions about:
+• 💰 Fees & Scholarships
+• 📋 Eligibility & Admission Process
+• ⚙️ Branches & Career Scope
+• 🏆 Placements & Internships
+• 🏠 Hostel & Campus Life
+• 📅 Important Dates & Documents
 
-What would you like to know today? 😊`;
-  appendBotMessage(welcome);
+**No internet needed — I work 100% offline!** 🎉
+Tap a quick button or just type your question! 😊`);
 }
 
 function sendQuick(chip) {
@@ -2281,49 +3136,18 @@ function sendQuick(chip) {
   sendMessage();
 }
 
-async function sendMessage() {
+function sendMessage() {
   const input = document.getElementById('chatInput');
   const text = input.value.trim();
-  if (!text || isTyping) return;
-
+  if (!text) return;
   input.value = '';
   input.style.height = 'auto';
   appendUserMessage(text);
-  chatHistory.push({ role: 'user', content: text });
-
   showTyping();
-  isTyping = true;
-  document.getElementById('chatSend').disabled = true;
-
-  try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        system: SYSTEM_PROMPT,
-        messages: chatHistory
-      })
-    });
-
-    const data = await response.json();
+  setTimeout(() => {
     removeTyping();
-
-    if (data.content && data.content[0]) {
-      const reply = data.content[0].text;
-      chatHistory.push({ role: 'assistant', content: reply });
-      appendBotMessage(reply);
-    } else {
-      appendBotMessage("I'm having a little trouble right now. Please try again or call our helpline at **1800-XXX-XXXX**. 📞");
-    }
-  } catch (err) {
-    removeTyping();
-    appendBotMessage("⚡ Connection hiccup! Please check your internet and try again, or reach us at **admissions@iec.edu.in**.");
-  }
-
-  isTyping = false;
-  document.getElementById('chatSend').disabled = false;
+    appendBotMessage(getReply(text));
+  }, 600 + Math.random() * 400);
 }
 
 function appendUserMessage(text) {
@@ -2331,14 +3155,11 @@ function appendUserMessage(text) {
   const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   const div = document.createElement('div');
   div.className = 'msg user';
-  div.innerHTML = `
-    <div class="msg-icon">👤</div>
-    <div>
-      <div class="msg-bubble">${escapeHtml(text)}</div>
-      <div class="msg-time">${time}</div>
-    </div>`;
+  div.innerHTML = `<div class="msg-icon">👤</div>
+    <div><div class="msg-bubble">${escHtml(text)}</div>
+    <div class="msg-time">${time}</div></div>`;
   msgs.appendChild(div);
-  scrollToBottom();
+  scrollBottom();
 }
 
 function appendBotMessage(text) {
@@ -2346,64 +3167,38 @@ function appendBotMessage(text) {
   const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   const div = document.createElement('div');
   div.className = 'msg bot';
-  div.innerHTML = `
-    <div class="msg-icon">🤖</div>
-    <div>
-      <div class="msg-bubble">${formatMessage(text)}</div>
-      <div class="msg-time">${time}</div>
-    </div>`;
+  div.innerHTML = `<div class="msg-icon">🤖</div>
+    <div><div class="msg-bubble">${fmtMsg(text)}</div>
+    <div class="msg-time">${time}</div></div>`;
   msgs.appendChild(div);
-  scrollToBottom();
+  scrollBottom();
 }
 
 function showTyping() {
   const msgs = document.getElementById('chatMessages');
   const div = document.createElement('div');
-  div.className = 'msg bot'; div.id = 'typingIndicator';
-  div.innerHTML = `
-    <div class="msg-icon">🤖</div>
+  div.className = 'msg bot'; div.id = 'typingInd';
+  div.innerHTML = `<div class="msg-icon">🤖</div>
     <div class="typing-bubble">
-      <div class="typing-dot"></div>
-      <div class="typing-dot"></div>
-      <div class="typing-dot"></div>
+      <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
     </div>`;
-  msgs.appendChild(div);
-  scrollToBottom();
+  msgs.appendChild(div); scrollBottom();
 }
+function removeTyping() { document.getElementById('typingInd')?.remove(); }
 
-function removeTyping() {
-  document.getElementById('typingIndicator')?.remove();
-}
-
-function formatMessage(text) {
-  return text
+function fmtMsg(t) {
+  return t
     .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/`(.+?)`/g, '<span class="tag">$1</span>')
-    .replace(/^• (.+)$/gm, '<li>$1</li>')
-    .replace(/^- (.+)$/gm, '<li>$1</li>')
-    .replace(/^(\d+)\. (.+)$/gm, '<li><strong>$1.</strong> $2</li>')
-    .replace(/(<li>[\s\S]*?<\/li>)+/g, m => `<ul>${m}</ul>`)
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/^• (.+)$/gm,'<li>$1</li>')
+    .replace(/^- (.+)$/gm,'<li>$1</li>')
+    .replace(/(<li>.*<\/li>\n?)+/g, m=>`<ul>${m}</ul>`)
     .replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
 }
-
-function escapeHtml(t) {
-  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
-function scrollToBottom() {
-  const msgs = document.getElementById('chatMessages');
-  msgs.scrollTop = msgs.scrollHeight;
-}
-
-function autoResize(el) {
-  el.style.height = 'auto';
-  el.style.height = Math.min(el.scrollHeight, 100) + 'px';
-}
-
-function chatKeyDown(e) {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-}
+function escHtml(t) { return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function scrollBottom() { const m=document.getElementById('chatMessages'); m.scrollTop=m.scrollHeight; }
+function autoResize(el) { el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,100)+'px'; }
+function chatKeyDown(e) { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();} }
 </script>
 </body>
 </html>
