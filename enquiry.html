@@ -1,0 +1,2409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Engineering College — Admission Enquiry</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0a0d14;
+      --surface: #111521;
+      --surface2: #161c2e;
+      --border: #1f2d4a;
+      --border-glow: #2563eb;
+      --accent: #3b82f6;
+      --accent2: #06b6d4;
+      --accent3: #f59e0b;
+      --text: #e2e8f0;
+      --text-muted: #64748b;
+      --text-dim: #94a3b8;
+      --success: #10b981;
+      --error: #ef4444;
+      --gradient: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%);
+      --glow: 0 0 20px rgba(59, 130, 246, 0.15);
+      --glow-strong: 0 0 40px rgba(59, 130, 246, 0.3);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Background grid ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(37,99,235,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(37,99,235,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none; z-index: 0;
+    }
+
+    /* ── Corner accent blobs ── */
+    body::after {
+      content: '';
+      position: fixed; top: -200px; right: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%);
+      pointer-events: none; z-index: 0;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: relative; z-index: 10;
+      background: linear-gradient(180deg, rgba(17,21,33,0.98) 0%, rgba(17,21,33,0.85) 100%);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(20px);
+      padding: 0 40px;
+    }
+
+    .header-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 0;
+    }
+
+    .logo-group { display: flex; align-items: center; gap: 16px; }
+
+    .logo-icon {
+      width: 52px; height: 52px;
+      background: linear-gradient(135deg, #1d4ed8, #0891b2);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700; font-size: 22px; color: #fff;
+      box-shadow: 0 4px 20px rgba(59,130,246,0.4);
+      flex-shrink: 0;
+    }
+
+    .logo-text h1 {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 22px; font-weight: 700;
+      letter-spacing: 0.05em;
+      background: linear-gradient(90deg, #e2e8f0, #93c5fd);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    .logo-text p { font-size: 12px; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 2px; }
+
+    .header-badge {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(16,185,129,0.1);
+      border: 1px solid rgba(16,185,129,0.3);
+      border-radius: 100px; padding: 6px 14px;
+    }
+    .badge-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--success); animation: pulse 2s infinite; }
+    .header-badge span { font-size: 12px; color: var(--success); font-weight: 500; letter-spacing: 0.05em; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.3); }
+    }
+
+    /* ── HERO BANNER ── */
+    .hero {
+      position: relative; z-index: 5;
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 60px 40px 50px;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute; bottom: -60px; left: -60px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(6,182,212,0.07) 0%, transparent 70%);
+    }
+
+    .hero-inner { max-width: 1100px; margin: 0 auto; position: relative; }
+
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(59,130,246,0.1);
+      border: 1px solid rgba(59,130,246,0.25);
+      border-radius: 100px; padding: 5px 14px;
+      font-size: 12px; font-weight: 500; color: var(--accent);
+      letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .hero h2 {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 700; line-height: 1.1;
+      letter-spacing: 0.02em;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+
+    .hero h2 span {
+      background: linear-gradient(90deg, #60a5fa, #22d3ee);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    .hero p { color: var(--text-dim); font-size: 15px; max-width: 500px; line-height: 1.7; }
+
+    .hero-stats {
+      display: flex; gap: 36px; margin-top: 32px; flex-wrap: wrap;
+    }
+
+    .stat { display: flex; flex-direction: column; gap: 2px; }
+    .stat-num { font-family: 'Rajdhani', sans-serif; font-size: 26px; font-weight: 700; color: #60a5fa; }
+    .stat-label { font-size: 12px; color: var(--text-muted); letter-spacing: 0.05em; text-transform: uppercase; }
+
+    /* ── PROGRESS BAR ── */
+    .progress-wrapper {
+      position: sticky; top: 0; z-index: 20;
+      background: rgba(10,13,20,0.95); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px;
+    }
+
+    .progress-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; align-items: center; gap: 0;
+      overflow-x: auto; scrollbar-width: none;
+    }
+    .progress-inner::-webkit-scrollbar { display: none; }
+
+    .step-tab {
+      display: flex; align-items: center; gap: 10px;
+      padding: 16px 20px; cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.3s; white-space: nowrap;
+      font-size: 13px; font-weight: 500; color: var(--text-muted);
+      letter-spacing: 0.03em;
+    }
+
+    .step-tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    .step-tab.completed { color: var(--success); }
+    .step-tab.completed .step-num { background: var(--success); }
+
+    .step-num {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--border); color: var(--text-muted);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; flex-shrink: 0;
+      transition: all 0.3s;
+    }
+
+    .step-tab.active .step-num { background: var(--accent); color: #fff; }
+
+    /* ── MAIN LAYOUT ── */
+    .main {
+      position: relative; z-index: 5;
+      max-width: 1100px; margin: 0 auto;
+      padding: 40px 40px 80px;
+    }
+
+    /* ── FORM SECTIONS ── */
+    .form-section { display: none; animation: fadeIn 0.4s ease; }
+    .form-section.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-header {
+      display: flex; align-items: flex-start; gap: 16px;
+      margin-bottom: 32px; padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; flex-shrink: 0;
+    }
+
+    .section-header h3 {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 22px; font-weight: 700; color: #fff; letter-spacing: 0.04em;
+    }
+    .section-header p { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+
+    /* ── GRID ── */
+    .grid { display: grid; gap: 20px; }
+    .grid-2 { grid-template-columns: 1fr 1fr; }
+    .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .col-span-2 { grid-column: span 2; }
+    .col-span-3 { grid-column: span 3; }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px; padding: 28px;
+      transition: border-color 0.3s;
+    }
+    .card:hover { border-color: rgba(59,130,246,0.2); }
+
+    .card-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 15px; font-weight: 600;
+      color: var(--text-dim); letter-spacing: 0.06em;
+      text-transform: uppercase; margin-bottom: 20px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .card-title::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+
+    /* ── FORM ELEMENTS ── */
+    .field { display: flex; flex-direction: column; gap: 7px; }
+
+    label {
+      font-size: 13px; font-weight: 500;
+      color: var(--text-dim); letter-spacing: 0.03em;
+    }
+    label .req { color: var(--accent3); margin-left: 3px; }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="number"],
+    input[type="date"],
+    select,
+    textarea {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px; padding: 11px 14px;
+      color: var(--text); font-family: 'DM Sans', sans-serif;
+      font-size: 14px; width: 100%;
+      transition: border-color 0.25s, box-shadow 0.25s;
+      -webkit-appearance: none; appearance: none;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--border-glow);
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+    }
+
+    input::placeholder, textarea::placeholder { color: var(--text-muted); }
+
+    input.error, select.error, textarea.error {
+      border-color: var(--error);
+    }
+
+    .field-error { font-size: 12px; color: var(--error); display: none; }
+    .field-error.visible { display: block; }
+
+    select option { background: var(--surface2); }
+
+    textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+
+    /* ── CUSTOM SELECT ARROW ── */
+    .select-wrap { position: relative; }
+    .select-wrap::after {
+      content: '▾';
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      color: var(--text-muted); pointer-events: none; font-size: 13px;
+    }
+    .select-wrap select { padding-right: 36px; }
+
+    /* ── RADIO & CHECKBOX GROUPS ── */
+    .radio-group, .check-group {
+      display: flex; flex-wrap: wrap; gap: 10px;
+    }
+
+    .radio-chip, .check-chip {
+      display: flex; align-items: center; gap: 8px;
+      padding: 9px 16px;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; cursor: pointer;
+      font-size: 13px; color: var(--text-dim);
+      transition: all 0.2s; user-select: none;
+    }
+    .radio-chip:hover, .check-chip:hover {
+      border-color: rgba(59,130,246,0.3);
+      color: var(--text);
+    }
+    .radio-chip input, .check-chip input { display: none; }
+    .radio-chip.selected, .check-chip.selected {
+      background: rgba(59,130,246,0.12);
+      border-color: var(--accent);
+      color: #93c5fd;
+    }
+
+    /* ── MARKS TABLE ── */
+    .marks-table { width: 100%; border-collapse: collapse; }
+    .marks-table th {
+      text-align: left; padding: 10px 14px;
+      font-size: 12px; font-weight: 600; letter-spacing: 0.06em;
+      color: var(--text-muted); text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
+    }
+    .marks-table td { padding: 10px 14px; vertical-align: middle; }
+    .marks-table tr { border-bottom: 1px solid rgba(31,45,74,0.5); }
+    .marks-table tr:last-child { border-bottom: none; }
+    .marks-table td:first-child { color: var(--text-dim); font-size: 13px; font-weight: 500; }
+    .marks-table input { padding: 8px 12px; font-size: 13px; }
+
+    /* ── BRANCH PREFERENCE CARDS ── */
+    .branch-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .branch-card {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 14px 16px;
+      cursor: pointer; transition: all 0.2s;
+      display: flex; align-items: center; gap: 12px;
+      user-select: none;
+    }
+    .branch-card:hover { border-color: rgba(59,130,246,0.3); transform: translateY(-1px); }
+    .branch-card.selected {
+      background: rgba(59,130,246,0.1);
+      border-color: var(--accent);
+    }
+
+    .branch-icon { font-size: 22px; }
+    .branch-name { font-size: 13px; font-weight: 500; color: var(--text-dim); }
+    .branch-code { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+    .branch-check {
+      margin-left: auto; width: 18px; height: 18px;
+      border-radius: 50%; border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: 10px; color: transparent;
+      transition: all 0.2s;
+    }
+    .branch-card.selected .branch-check {
+      background: var(--accent); border-color: var(--accent); color: #fff;
+    }
+
+    /* ── PREFERENCE RANK ── */
+    .pref-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 16px;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; margin-bottom: 10px;
+      transition: border-color 0.2s;
+    }
+    .pref-rank {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(59,130,246,0.15); color: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Rajdhani', sans-serif; font-size: 14px; font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* ── FILE UPLOAD ── */
+    .file-zone {
+      border: 2px dashed var(--border); border-radius: 10px;
+      padding: 32px 20px; text-align: center; cursor: pointer;
+      transition: all 0.25s; background: var(--surface2);
+      position: relative;
+    }
+    .file-zone:hover, .file-zone.drag-over {
+      border-color: var(--accent);
+      background: rgba(59,130,246,0.05);
+    }
+    .file-zone input[type="file"] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer;
+      width: 100%; height: 100%; border: none; background: none;
+    }
+    .file-zone .upload-icon { font-size: 32px; margin-bottom: 10px; }
+    .file-zone p { font-size: 13px; color: var(--text-muted); }
+    .file-zone strong { color: var(--accent); }
+    .file-zone .file-types { font-size: 11px; color: var(--text-muted); margin-top: 6px; }
+
+    .file-list { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
+    .file-tag {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.2);
+      border-radius: 6px; padding: 5px 10px; font-size: 12px; color: #93c5fd;
+    }
+    .file-tag button {
+      background: none; border: none; color: #93c5fd; cursor: pointer;
+      font-size: 14px; line-height: 1; padding: 0;
+    }
+
+    /* ── ENTRANCE EXAM RESULTS ── */
+    .exam-block {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 18px 20px; margin-bottom: 14px;
+    }
+    .exam-title {
+      font-family: 'Rajdhani', sans-serif; font-size: 14px; font-weight: 600;
+      color: var(--accent2); letter-spacing: 0.05em; margin-bottom: 14px;
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    /* ── TOGGLE ── */
+    .toggle-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 16px; background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .toggle-info { display: flex; flex-direction: column; gap: 3px; }
+    .toggle-label { font-size: 14px; font-weight: 500; color: var(--text); }
+    .toggle-sub { font-size: 12px; color: var(--text-muted); }
+
+    .toggle-switch {
+      position: relative; width: 44px; height: 24px; cursor: pointer; flex-shrink: 0;
+    }
+    .toggle-switch input { display: none; }
+    .toggle-slider {
+      position: absolute; inset: 0;
+      background: var(--border); border-radius: 100px; transition: 0.3s;
+    }
+    .toggle-slider::before {
+      content: ''; position: absolute;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: #fff; top: 3px; left: 3px; transition: 0.3s;
+    }
+    .toggle-switch input:checked + .toggle-slider { background: var(--accent); }
+    .toggle-switch input:checked + .toggle-slider::before { transform: translateX(20px); }
+
+    /* ── RANGE SLIDER ── */
+    input[type="range"] {
+      -webkit-appearance: none; appearance: none;
+      width: 100%; height: 4px; background: var(--border);
+      border-radius: 100px; outline: none; border: none; padding: 0;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 18px; height: 18px;
+      border-radius: 50%; background: var(--accent); cursor: pointer;
+      border: 3px solid var(--surface2);
+      box-shadow: 0 0 6px rgba(59,130,246,0.5);
+    }
+
+    /* ── INFO BOX ── */
+    .info-box {
+      display: flex; gap: 12px;
+      background: rgba(59,130,246,0.07); border: 1px solid rgba(59,130,246,0.2);
+      border-radius: 10px; padding: 14px 16px; margin-bottom: 20px;
+    }
+    .info-box .icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+    .info-box p { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+    .info-box strong { color: var(--accent); }
+
+    /* ── DECLARATION ── */
+    .declaration-box {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 20px 22px;
+      font-size: 13px; color: var(--text-dim); line-height: 1.8;
+      max-height: 160px; overflow-y: auto;
+    }
+    .declaration-box::-webkit-scrollbar { width: 4px; }
+    .declaration-box::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    .check-line {
+      display: flex; align-items: flex-start; gap: 12px; margin-top: 16px;
+    }
+    .custom-check {
+      width: 18px; height: 18px; border-radius: 4px;
+      border: 2px solid var(--border); background: var(--surface2);
+      flex-shrink: 0; margin-top: 2px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+    }
+    .custom-check.checked { background: var(--accent); border-color: var(--accent); }
+    .custom-check.checked::after { content: '✓'; font-size: 11px; color: #fff; }
+
+    /* ── NAVIGATION BUTTONS ── */
+    .form-nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 32px; border-top: 1px solid var(--border); margin-top: 36px;
+    }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 28px; border-radius: 8px; font-family: 'DM Sans', sans-serif;
+      font-size: 14px; font-weight: 500; cursor: pointer;
+      border: none; transition: all 0.25s; letter-spacing: 0.02em;
+    }
+
+    .btn-secondary {
+      background: var(--surface2); color: var(--text-dim);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { border-color: rgba(59,130,246,0.3); color: var(--text); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(37,99,235,0.35);
+    }
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 24px rgba(37,99,235,0.5);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #059669, #047857);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(5,150,105,0.35);
+    }
+    .btn-success:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 24px rgba(5,150,105,0.5);
+    }
+
+    .btn-icon { font-size: 16px; }
+
+    /* ── SUCCESS SCREEN ── */
+    .success-screen {
+      display: none;
+      text-align: center; padding: 80px 40px;
+      animation: fadeIn 0.6s ease;
+    }
+    .success-screen.active { display: block; }
+
+    .success-circle {
+      width: 100px; height: 100px; border-radius: 50%;
+      background: linear-gradient(135deg, rgba(16,185,129,0.2), rgba(16,185,129,0.05));
+      border: 2px solid rgba(16,185,129,0.4);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 48px; margin: 0 auto 28px;
+      box-shadow: 0 0 40px rgba(16,185,129,0.2);
+    }
+
+    .success-screen h2 {
+      font-family: 'Rajdhani', sans-serif; font-size: 36px; font-weight: 700;
+      color: #fff; margin-bottom: 12px;
+    }
+    .success-screen p { color: var(--text-dim); font-size: 15px; max-width: 480px; margin: 0 auto 12px; line-height: 1.7; }
+
+    .enquiry-id {
+      display: inline-block;
+      background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.25);
+      border-radius: 8px; padding: 12px 24px; margin: 20px 0;
+      font-family: 'Rajdhani', sans-serif; font-size: 20px; font-weight: 700; color: var(--accent);
+      letter-spacing: 0.1em;
+    }
+
+    .next-steps {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 16px; max-width: 700px; margin: 32px auto 0; text-align: left;
+    }
+    .next-step {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 16px;
+    }
+    .next-step .ns-icon { font-size: 24px; margin-bottom: 8px; }
+    .next-step h4 { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .next-step p { font-size: 12px; color: var(--text-muted); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      header, .hero, .progress-wrapper, .main { padding-left: 20px; padding-right: 20px; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .col-span-2, .col-span-3 { grid-column: span 1; }
+      .hero-stats { gap: 24px; }
+      .header-badge span { display: none; }
+      .next-steps { grid-template-columns: 1fr; }
+      .branch-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ── TOOLTIP ── */
+    [data-tip] { position: relative; }
+    [data-tip]:hover::after {
+      content: attr(data-tip);
+      position: absolute; bottom: calc(100% + 8px); left: 0;
+      background: #1e293b; border: 1px solid var(--border);
+      border-radius: 6px; padding: 6px 10px;
+      font-size: 12px; color: var(--text-dim);
+      white-space: nowrap; z-index: 100;
+    }
+
+    /* ── CHAR COUNTER ── */
+    .char-counter { font-size: 11px; color: var(--text-muted); text-align: right; margin-top: 4px; }
+
+    /* Score indicator */
+    .score-bar { height: 4px; border-radius: 100px; background: var(--border); margin-top: 8px; overflow: hidden; }
+    .score-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, #3b82f6, #06b6d4); transition: width 0.4s; }
+  </style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header>
+  <div class="header-inner">
+    <div class="logo-group">
+      <div class="logo-icon">IEC</div>
+      <div class="logo-text">
+        <h1>Institute of Engineering & Computing</h1>
+        <p>Autonomous — NAAC A++ Accredited</p>
+      </div>
+    </div>
+    <div class="header-badge">
+      <div class="badge-dot"></div>
+      <span>Admissions 2025–26 Open</span>
+    </div>
+  </div>
+</header>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">🎓 B.Tech Admission Enquiry</div>
+    <h2>Shape Your Future in <span>Engineering</span></h2>
+    <p>Complete this enquiry form to get detailed information about our programmes, eligibility, scholarships, and the admission process.</p>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num">12</span><span class="stat-label">Engineering Branches</span></div>
+      <div class="stat"><span class="stat-num">5000+</span><span class="stat-label">Students Enrolled</span></div>
+      <div class="stat"><span class="stat-num">98%</span><span class="stat-label">Placement Rate</span></div>
+      <div class="stat"><span class="stat-num">₹2L+</span><span class="stat-label">Scholarship Pool</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── STEP TABS ── -->
+<div class="progress-wrapper">
+  <div class="progress-inner">
+    <div class="step-tab active" data-step="1" onclick="goToStep(1)">
+      <span class="step-num">1</span> Personal Details
+    </div>
+    <div class="step-tab" data-step="2" onclick="goToStep(2)">
+      <span class="step-num">2</span> Academic Records
+    </div>
+    <div class="step-tab" data-step="3" onclick="goToStep(3)">
+      <span class="step-num">3</span> Entrance Exams
+    </div>
+    <div class="step-tab" data-step="4" onclick="goToStep(4)">
+      <span class="step-num">4</span> Branch Preferences
+    </div>
+    <div class="step-tab" data-step="5" onclick="goToStep(5)">
+      <span class="step-num">5</span> Family & Finance
+    </div>
+    <div class="step-tab" data-step="6" onclick="goToStep(6)">
+      <span class="step-num">6</span> Documents
+    </div>
+    <div class="step-tab" data-step="7" onclick="goToStep(7)">
+      <span class="step-num">7</span> Review & Submit
+    </div>
+  </div>
+</div>
+
+<!-- ── MAIN ── -->
+<div class="main">
+
+  <!-- ══ STEP 1: Personal Details ══ -->
+  <div class="form-section active" id="step-1">
+    <div class="section-header">
+      <div class="section-icon" style="background:rgba(59,130,246,0.1)">👤</div>
+      <div>
+        <h3>Personal Information</h3>
+        <p>Basic details of the prospective student</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📋 Student Identity</div>
+      <div class="grid grid-3" style="gap:20px">
+        <div class="field">
+          <label>First Name <span class="req">*</span></label>
+          <input type="text" id="firstName" placeholder="e.g. Arjun" />
+          <span class="field-error" id="err-firstName">Required</span>
+        </div>
+        <div class="field">
+          <label>Middle Name</label>
+          <input type="text" id="middleName" placeholder="(optional)" />
+        </div>
+        <div class="field">
+          <label>Last Name <span class="req">*</span></label>
+          <input type="text" id="lastName" placeholder="e.g. Sharma" />
+          <span class="field-error" id="err-lastName">Required</span>
+        </div>
+        <div class="field">
+          <label>Date of Birth <span class="req">*</span></label>
+          <input type="date" id="dob" max="2009-12-31" min="2000-01-01" />
+          <span class="field-error" id="err-dob">Required</span>
+        </div>
+        <div class="field">
+          <label>Gender <span class="req">*</span></label>
+          <div class="radio-group">
+            <label class="radio-chip" onclick="selectChip(this,'gender')"><input type="radio" name="gender" value="Male"/>Male</label>
+            <label class="radio-chip" onclick="selectChip(this,'gender')"><input type="radio" name="gender" value="Female"/>Female</label>
+            <label class="radio-chip" onclick="selectChip(this,'gender')"><input type="radio" name="gender" value="Other"/>Other</label>
+          </div>
+          <span class="field-error" id="err-gender">Please select gender</span>
+        </div>
+        <div class="field">
+          <label>Nationality <span class="req">*</span></label>
+          <div class="select-wrap">
+            <select id="nationality">
+              <option value="">Select</option>
+              <option value="Indian" selected>Indian</option>
+              <option value="NRI">NRI</option>
+              <option value="Foreign">Foreign National</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>Aadhar / ID Number <span class="req">*</span></label>
+          <input type="text" id="aadhar" placeholder="12-digit Aadhar" maxlength="14" />
+          <span class="field-error" id="err-aadhar">Enter valid 12-digit number</span>
+        </div>
+        <div class="field">
+          <label>Religion</label>
+          <div class="select-wrap">
+            <select id="religion">
+              <option value="">Select</option>
+              <option>Hindu</option><option>Muslim</option><option>Christian</option>
+              <option>Sikh</option><option>Buddhist</option><option>Jain</option><option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>Category <span class="req">*</span></label>
+          <div class="select-wrap">
+            <select id="category">
+              <option value="">Select</option>
+              <option>General (UR)</option>
+              <option>OBC</option><option>OBC-NCL</option>
+              <option>SC</option><option>ST</option>
+              <option>EWS</option><option>PH/PwD</option>
+            </select>
+          </div>
+          <span class="field-error" id="err-category">Required</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <div class="card-title">📞 Contact Details</div>
+      <div class="grid grid-2" style="gap:20px">
+        <div class="field">
+          <label>Mobile Number <span class="req">*</span></label>
+          <input type="tel" id="mobile" placeholder="+91 98765 43210" maxlength="15" />
+          <span class="field-error" id="err-mobile">Enter valid mobile number</span>
+        </div>
+        <div class="field">
+          <label>WhatsApp Number</label>
+          <input type="tel" id="whatsapp" placeholder="Same as mobile or different" maxlength="15" />
+        </div>
+        <div class="field col-span-2">
+          <label>Email Address <span class="req">*</span></label>
+          <input type="email" id="email" placeholder="arjun@example.com" />
+          <span class="field-error" id="err-email">Enter valid email address</span>
+        </div>
+        <div class="field col-span-2">
+          <label>Permanent Address <span class="req">*</span></label>
+          <textarea id="address" placeholder="House/Flat No., Street, Area, City, State – PIN Code" rows="3"></textarea>
+          <span class="field-error" id="err-address">Required</span>
+        </div>
+        <div class="field">
+          <label>State <span class="req">*</span></label>
+          <div class="select-wrap">
+            <select id="state">
+              <option value="">Select State</option>
+              <option>Andhra Pradesh</option><option>Arunachal Pradesh</option><option>Assam</option>
+              <option>Bihar</option><option>Chhattisgarh</option><option>Goa</option>
+              <option>Gujarat</option><option>Haryana</option><option>Himachal Pradesh</option>
+              <option>Jharkhand</option><option>Karnataka</option><option>Kerala</option>
+              <option>Madhya Pradesh</option><option>Maharashtra</option><option>Manipur</option>
+              <option>Meghalaya</option><option>Mizoram</option><option>Nagaland</option>
+              <option>Odisha</option><option>Punjab</option><option>Rajasthan</option>
+              <option>Sikkim</option><option>Tamil Nadu</option><option>Telangana</option>
+              <option>Tripura</option><option>Uttar Pradesh</option><option>Uttarakhand</option>
+              <option>West Bengal</option><option>Delhi</option>
+            </select>
+          </div>
+          <span class="field-error" id="err-state">Required</span>
+        </div>
+        <div class="field">
+          <label>PIN Code <span class="req">*</span></label>
+          <input type="text" id="pin" placeholder="6-digit PIN" maxlength="6" />
+          <span class="field-error" id="err-pin">Enter valid PIN</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-nav">
+      <span></span>
+      <button class="btn btn-primary" onclick="nextStep(1)">Next: Academic Records <span class="btn-icon">→</span></button>
+    </div>
+  </div>
+
+  <!-- ══ STEP 2: Academic Records ══ -->
+  <div class="form-section" id="step-2">
+    <div class="section-header">
+      <div class="section-icon" style="background:rgba(245,158,11,0.1)">📚</div>
+      <div>
+        <h3>Academic Records</h3>
+        <p>10th and 12th standard marks and board details</p>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <span class="icon">ℹ️</span>
+      <p><strong>Note:</strong> For B.Tech admission, students must have passed 10+2 with Physics, Chemistry, and Mathematics (PCM). A minimum aggregate of <strong>60%</strong> in PCM is typically required (50% for reserved categories).</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🎓 10th Standard (SSC)</div>
+      <div class="grid grid-3" style="gap:20px">
+        <div class="field">
+          <label>Board Name <span class="req">*</span></label>
+          <div class="select-wrap">
+            <select id="board10">
+              <option value="">Select Board</option>
+              <option>CBSE</option><option>ICSE</option>
+              <option>Karnataka SSLC</option><option>Maharashtra SSC</option>
+              <option>Tamil Nadu (SSLC)</option><option>UP Board</option>
+              <option>Rajasthan Board</option><option>West Bengal Board</option>
+              <option>Other State Board</option>
+            </select>
+          </div>
+          <span class="field-error" id="err-board10">Required</span>
+        </div>
+        <div class="field">
+          <label>Year of Passing <span class="req">*</span></label>
+          <div class="select-wrap">
+            <select id="year10">
+              <option value="">Select Year</option>
+              <option>2025</option><option>2024</option><option>2023</option>
+              <option>2022</option><option>2021</option><option>2020</option>
+            </select>
+          </div>
+          <span class="field-error" id="err-year10">Required</span>
+        </div>
+        <div class="field">
+          <label>Roll Number</label>
+          <input type="text" id="roll10" placeholder="Board roll number" />
+        </div>
+        <div class="field">
+          <label>Marks Obtained</label>
+          <input type="number" id="marks10" placeholder="e.g. 480" min="0" max="600" />
+        </div>
+        <div class="field">
+          <label>Total Marks</label>
+          <input type="number" id="total10" placeholder="e.g. 600" min="0" max="600" value="500" />
+        </div>
+        <div class="field">
+          <label>Percentage / CGPA <span class="req">*</span></label>
+          <input type="number" id="pct10" placeholder="e.g. 85.6" min="0" max="100" step="0.1" oninput="updateBar('bar10',this.value)" />
+          <div class="score-bar"><div class="score-fill" id="bar10" style="width:0%"></div></div>
+          <span class="field-error" id="err-pct10">Required</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <div class="card-title">🎓 12th Standard (HSC / PUC)</div>
+      <div class="grid grid-3" style="gap:20px">
+        <div class="field">
+          <label>Board Name <span class="req">*</span></label>
+          <div class="select-wrap">
+            <select id="board12">
+              <option value="">Select Board</option>
+              <option>CBSE</option><option>ISC (ICSE 12th)</option>
+              <option>Karnataka II PUC</option><option>Maharashtra HSC</option>
+              <option>Tamil Nadu HSC</option><option>UP Board (Inter)</option>
+              <option>Rajasthan Board (12th)</option><option>West Bengal HS</option>
+              <option>Other State Board</option>
+            </select>
+          </div>
+          <span class="field-error" id="err-board12">Required</span>
+        </div>
+        <div class="field">
+          <label>School / College Name <span class="req">*</span></label>
+          <input type="text" id="school12" placeholder="Name of the institution" />
+          <span class="field-error" id="err-school12">Required</span>
+        </div>
+        <div class="field">
+          <label>Stream <span class="req">*</span></label>
+          <div class="radio-group">
+            <label class="radio-chip" onclick="selectChip(this,'stream')"><input type="radio" name="stream" value="PCM"/>PCM</label>
+            <label class="radio-chip" onclick="selectChip(this,'stream')"><input type="radio" name="stream" value="PCB"/>PCB</label>
+            <label class="radio-chip" onclick="selectChip(this,'stream')"><input type="radio" name="stream" value="PCMB"/>PCMB</label>
+          </div>
+          <span class="field-error" id="err-stream">Required</span>
+        </div>
+        <div class="field">
+          <label>Year of Passing <span class="req">*</span></label>
+          <div class="select-wrap">
+            <select id="year12">
+              <option value="">Select Year</option>
+              <option>2025</option><option>2024</option><option>2023</option>
+              <option>2022</option>
+            </select>
+          </div>
+          <span class="field-error" id="err-year12">Required</span>
+        </div>
+        <div class="field">
+          <label>Appearing / Passed</label>
+          <div class="radio-group">
+            <label class="radio-chip" onclick="selectChip(this,'status12')"><input type="radio" name="status12" value="Passed"/>Passed</label>
+            <label class="radio-chip" onclick="selectChip(this,'status12')"><input type="radio" name="status12" value="Appearing"/>Appearing</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Percentage / CGPA <span class="req">*</span></label>
+          <input type="number" id="pct12" placeholder="e.g. 91.2" min="0" max="100" step="0.1" oninput="updateBar('bar12',this.value)" />
+          <div class="score-bar"><div class="score-fill" id="bar12" style="width:0%"></div></div>
+          <span class="field-error" id="err-pct12">Required</span>
+        </div>
+      </div>
+
+      <div style="margin-top:24px">
+        <div class="card-title">📊 Subject-wise Marks</div>
+        <table class="marks-table">
+          <thead>
+            <tr>
+              <th>Subject</th>
+              <th>Marks Obtained</th>
+              <th>Out Of</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Physics</td><td><input type="number" placeholder="e.g. 95" min="0" max="100" id="phy"/></td><td><input type="number" value="100" min="50" max="100"/></td></tr>
+            <tr><td>Chemistry</td><td><input type="number" placeholder="e.g. 88" min="0" max="100" id="chem"/></td><td><input type="number" value="100" min="50" max="100"/></td></tr>
+            <tr><td>Mathematics</td><td><input type="number" placeholder="e.g. 97" min="0" max="100" id="math"/></td><td><input type="number" value="100" min="50" max="100"/></td></tr>
+            <tr><td>English</td><td><input type="number" placeholder="e.g. 82" min="0" max="100"/></td><td><input type="number" value="100" min="50" max="100"/></td></tr>
+            <tr><td>Optional Subject</td><td><input type="number" placeholder="e.g. 90" min="0" max="100"/></td><td><input type="number" value="100" min="50" max="100"/></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="form-nav">
+      <button class="btn btn-secondary" onclick="prevStep(2)">← Back</button>
+      <button class="btn btn-primary" onclick="nextStep(2)">Next: Entrance Exams →</button>
+    </div>
+  </div>
+
+  <!-- ══ STEP 3: Entrance Exams ══ -->
+  <div class="form-section" id="step-3">
+    <div class="section-header">
+      <div class="section-icon" style="background:rgba(6,182,212,0.1)">🏆</div>
+      <div>
+        <h3>Entrance Exam Scores</h3>
+        <p>JEE, KCET, MHT-CET or other qualifying examinations</p>
+      </div>
+    </div>
+
+    <div class="exam-block">
+      <div class="exam-title">📝 JEE Main</div>
+      <div class="grid grid-3" style="gap:16px">
+        <div class="field">
+          <label>Appeared in JEE Main?</label>
+          <div class="radio-group">
+            <label class="radio-chip" onclick="selectChip(this,'jeeMain');toggleExam('jeeMainDetails',true)"><input type="radio" name="jeeMain" value="Yes"/>Yes</label>
+            <label class="radio-chip" onclick="selectChip(this,'jeeMain');toggleExam('jeeMainDetails',false)"><input type="radio" name="jeeMain" value="No"/>No</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>JEE Application Number</label>
+          <input type="text" id="jeeAppNo" placeholder="12-digit number" />
+        </div>
+        <div class="field">
+          <label>Attempt</label>
+          <div class="select-wrap">
+            <select>
+              <option>Jan 2025</option><option>Apr 2025</option>
+              <option>Jan 2024</option><option>Apr 2024</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>NTA Score (out of 300)</label>
+          <input type="number" id="jeeScore" placeholder="e.g. 180" min="0" max="300" oninput="updateBar('barJee',this.value/3)" />
+          <div class="score-bar"><div class="score-fill" id="barJee" style="width:0%"></div></div>
+        </div>
+        <div class="field">
+          <label>Percentile</label>
+          <input type="number" id="jeePerc" placeholder="e.g. 95.6" min="0" max="100" step="0.01" />
+        </div>
+        <div class="field">
+          <label>AIR (All India Rank)</label>
+          <input type="number" id="jeeRank" placeholder="e.g. 25000" />
+        </div>
+      </div>
+    </div>
+
+    <div class="exam-block">
+      <div class="exam-title">📝 JEE Advanced</div>
+      <div class="grid grid-3" style="gap:16px">
+        <div class="field">
+          <label>Appeared in JEE Advanced?</label>
+          <div class="radio-group">
+            <label class="radio-chip" onclick="selectChip(this,'jeeAdv')"><input type="radio" name="jeeAdv" value="Yes"/>Yes</label>
+            <label class="radio-chip" onclick="selectChip(this,'jeeAdv')"><input type="radio" name="jeeAdv" value="No"/>No</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>JEE Advanced Score</label>
+          <input type="number" placeholder="e.g. 120" min="0" max="360" />
+        </div>
+        <div class="field">
+          <label>CRL (Category Rank)</label>
+          <input type="number" placeholder="e.g. 8000" />
+        </div>
+      </div>
+    </div>
+
+    <div class="exam-block">
+      <div class="exam-title">📝 State / Other Entrance Exams</div>
+      <div class="grid grid-3" style="gap:16px">
+        <div class="field">
+          <label>Exam Name</label>
+          <div class="select-wrap">
+            <select id="stateExam">
+              <option value="">Select</option>
+              <option>KCET (Karnataka)</option>
+              <option>MHT-CET (Maharashtra)</option>
+              <option>WBJEE (West Bengal)</option>
+              <option>AP EAMCET</option>
+              <option>TS EAMCET</option>
+              <option>UPSEE / AKTU</option>
+              <option>BITSAT</option>
+              <option>VITEEE</option>
+              <option>SRMJEEE</option>
+              <option>COMEDK UGET</option>
+              <option>KEAM (Kerala)</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>Registration / Hall Ticket No.</label>
+          <input type="text" placeholder="Exam registration number" />
+        </div>
+        <div class="field">
+          <label>Score / Rank</label>
+          <input type="text" placeholder="Score or Rank" />
+        </div>
+        <div class="field">
+          <label>Other Exam (if any)</label>
+          <input type="text" placeholder="Exam name" />
+        </div>
+        <div class="field">
+          <label>Score / Percentile</label>
+          <input type="text" placeholder="Score or percentile" />
+        </div>
+      </div>
+    </div>
+
+    <div class="exam-block">
+      <div class="exam-title">📝 Lateral Entry (Diploma Holders)</div>
+      <div class="grid grid-2" style="gap:16px">
+        <div class="field">
+          <label>Applying for Lateral Entry (2nd year direct)?</label>
+          <div class="radio-group">
+            <label class="radio-chip" onclick="selectChip(this,'lateral')"><input type="radio" name="lateral" value="Yes"/>Yes</label>
+            <label class="radio-chip" onclick="selectChip(this,'lateral')"><input type="radio" name="lateral" value="No"/>No</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Diploma Branch (if applicable)</label>
+          <input type="text" placeholder="e.g. Diploma in Electronics" />
+        </div>
+        <div class="field">
+          <label>Diploma Percentage</label>
+          <input type="number" placeholder="e.g. 78.5" min="0" max="100" step="0.1" />
+        </div>
+        <div class="field">
+          <label>Passed from Institute</label>
+          <input type="text" placeholder="Polytechnic / ITI name" />
+        </div>
+      </div>
+    </div>
+
+    <div class="form-nav">
+      <button class="btn btn-secondary" onclick="prevStep(3)">← Back</button>
+      <button class="btn btn-primary" onclick="nextStep(3)">Next: Branch Preferences →</button>
+    </div>
+  </div>
+
+  <!-- ══ STEP 4: Branch Preferences ══ -->
+  <div class="form-section" id="step-4">
+    <div class="section-header">
+      <div class="section-icon" style="background:rgba(245,158,11,0.1)">⚙️</div>
+      <div>
+        <h3>Branch Preferences</h3>
+        <p>Select up to 5 preferred engineering branches in order of preference</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🏗️ Available Engineering Branches</div>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px">Click to select (max 5). Drag the selected list below to reorder priority.</p>
+      <div class="branch-grid" id="branchGrid">
+        <div class="branch-card" data-branch="CSE" onclick="toggleBranch(this)">
+          <span class="branch-icon">💻</span>
+          <div><div class="branch-name">Computer Science</div><div class="branch-code">B.Tech CSE</div></div>
+          <div class="branch-check">✓</div>
+        </div>
+        <div class="branch-card" data-branch="CSE-AI" onclick="toggleBranch(this)">
+          <span class="branch-icon">🤖</span>
+          <div><div class="branch-name">CSE — AI & ML</div><div class="branch-code">B.Tech CSE (AI)</div></div>
+          <div class="branch-check">✓</div>
+        </div>
+        <div class="branch-card" data-branch="CSE-DS" onclick="toggleBranch(this)">
+          <span class="branch-icon">📊</span>
+          <div><div class="branch-name">Data Science</div><div class="branch-code">B.Tech DS</div></div>
+          <div class="branch-check">✓</div>
+        </div>
+        <div class="branch-card" data-branch="IT" onclick="toggleBranch(this)">
+          <span class="branch-icon">🌐</span>
+          <div><div class="branch-name">Information Tech.</div><div class="branch-code">B.Tech IT</div></div>
+          <div class="branch-check">✓</div>
+        </div>
+        <div class="branch-card" data-branch="ECE" onclick="toggleBranch(this)">
+          <span class="branch-icon">📡</span>
+          <div><div class="branch-name">Electronics & Comm.</div><div class="branch-code">B.Tech ECE</div></div>
+          <div class="branch-check">✓</div>
+        </div>
+        <div class="branch-card" data-branch="EEE" onclick="toggleBranch(this)">
+          <span class="branch-icon">⚡</span>
+          <div><div class="branch-name">Electrical & Elec.</div><div class="branch-code">B.Tech EEE</div></div>
+          <div class="branch-check">✓</div>
+        </div>
+        <div class="branch-card" data-branch="ME" onclick="toggleBranch(this)">
+          <span class="branch-icon">🔧</span>
+          <div><div class="branch-name">Mechanical Engg.</div><div class="branch-code">B.Tech ME</div></div>
+          <div class="branch-check">✓</div>
+        </div>
+        <div class="branch-card" data-branch="CE" onclick="toggleBranch(this)">
+          <span class="branch-icon">🏗️</span>
+          <div><div class="branch-name">Civil Engineering</div><div class="branch-code">B.Tech CE</div></div>
+          <div class="branch-check">✓</div>
+        </div>
+        <div class="branch-card" data-branch="CHEM" onclick="toggleBranch(this)">
+          <span class="branch-icon">⚗️</span>
+          <div><div class="branch-name">Chemical Engg.</div><div class="branch-code">B.Tech ChE</div></div>
+          <div class="branch-check">✓</div>
+        </div>
+        <div class="branch-card" data-branch="BIO" onclick="toggleBranch(this)">
+          <span class="branch-icon">🧬</span>
+          <div><div class="branch-name">Biotech & Biomed.</div><div class="branch-code">B.Tech BT</div></div>
+          <div class="branch-check">✓</div>
+        </div>
+        <div class="branch-card" data-branch="AERO" onclick="toggleBranch(this)">
+          <span class="branch-icon">✈️</span>
+          <div><div class="branch-name">Aerospace Engg.</div><div class="branch-code">B.Tech AE</div></div>
+          <div class="branch-check">✓</div>
+        </div>
+        <div class="branch-card" data-branch="CYBER" onclick="toggleBranch(this)">
+          <span class="branch-icon">🔐</span>
+          <div><div class="branch-name">Cyber Security</div><div class="branch-code">B.Tech CS</div></div>
+          <div class="branch-check">✓</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <div class="card-title">🥇 Your Priority Order</div>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px" id="prefHint">Select branches above to see them here.</p>
+      <div id="prefList"></div>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <div class="card-title">📋 Additional Preferences</div>
+      <div class="grid grid-2" style="gap:20px">
+        <div class="field">
+          <label>Preferred Quota</label>
+          <div class="select-wrap">
+            <select>
+              <option>Management Quota</option>
+              <option>NRI Quota</option>
+              <option>Government / CET Quota</option>
+              <option>Merit / Open Quota</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>Mode of Study</label>
+          <div class="radio-group">
+            <label class="radio-chip" onclick="selectChip(this,'mode')"><input type="radio" name="mode" value="Regular"/>Regular</label>
+            <label class="radio-chip" onclick="selectChip(this,'mode')"><input type="radio" name="mode" value="Distance"/>Distance</label>
+          </div>
+        </div>
+        <div class="field col-span-2">
+          <label>Why this branch? (Optional)</label>
+          <textarea placeholder="Briefly describe your interest or motivation for the chosen branch..." rows="3" id="whyBranch" oninput="countChars(this,'whyCount',300)"></textarea>
+          <div class="char-counter"><span id="whyCount">0</span>/300</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-nav">
+      <button class="btn btn-secondary" onclick="prevStep(4)">← Back</button>
+      <button class="btn btn-primary" onclick="nextStep(4)">Next: Family & Finance →</button>
+    </div>
+  </div>
+
+  <!-- ══ STEP 5: Family & Finance ══ -->
+  <div class="form-section" id="step-5">
+    <div class="section-header">
+      <div class="section-icon" style="background:rgba(16,185,129,0.1)">👨‍👩‍👦</div>
+      <div>
+        <h3>Family & Financial Details</h3>
+        <p>Guardian information, income, and financial aid requirements</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">👨‍💼 Father / Guardian 1</div>
+      <div class="grid grid-3" style="gap:20px">
+        <div class="field">
+          <label>Full Name <span class="req">*</span></label>
+          <input type="text" id="fatherName" placeholder="Father's full name" />
+          <span class="field-error" id="err-fatherName">Required</span>
+        </div>
+        <div class="field">
+          <label>Occupation</label>
+          <div class="select-wrap">
+            <select>
+              <option>Government Employee</option><option>Private Employee</option>
+              <option>Self-Employed / Business</option><option>Farmer</option>
+              <option>Retired</option><option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>Designation / Job Title</label>
+          <input type="text" placeholder="e.g. Engineer, Teacher" />
+        </div>
+        <div class="field">
+          <label>Mobile Number <span class="req">*</span></label>
+          <input type="tel" id="fatherMobile" placeholder="+91 XXXXX XXXXX" />
+          <span class="field-error" id="err-fatherMobile">Required</span>
+        </div>
+        <div class="field">
+          <label>Email (optional)</label>
+          <input type="email" placeholder="father@example.com" />
+        </div>
+        <div class="field">
+          <label>Annual Income (₹)</label>
+          <div class="select-wrap">
+            <select id="income">
+              <option>Below ₹1,00,000</option>
+              <option>₹1,00,000 – ₹2,50,000</option>
+              <option>₹2,50,000 – ₹5,00,000</option>
+              <option>₹5,00,000 – ₹8,00,000</option>
+              <option>₹8,00,000 – ₹12,00,000</option>
+              <option>Above ₹12,00,000</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <div class="card-title">👩‍💼 Mother / Guardian 2</div>
+      <div class="grid grid-3" style="gap:20px">
+        <div class="field">
+          <label>Full Name <span class="req">*</span></label>
+          <input type="text" id="motherName" placeholder="Mother's full name" />
+          <span class="field-error" id="err-motherName">Required</span>
+        </div>
+        <div class="field">
+          <label>Occupation</label>
+          <div class="select-wrap">
+            <select>
+              <option>Homemaker</option><option>Government Employee</option>
+              <option>Private Employee</option><option>Self-Employed</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>Mobile Number</label>
+          <input type="tel" placeholder="+91 XXXXX XXXXX" />
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <div class="card-title">💰 Financial Aid & Hostel</div>
+      <div class="grid" style="gap:14px">
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Interested in Scholarship / Fee Waiver?</div>
+            <div class="toggle-sub">We offer merit, need-based, and sports scholarships</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="togScholarship" onchange="toggleSection('scholarshipDetails', this.checked)"/>
+            <div class="toggle-slider"></div>
+          </label>
+        </div>
+        <div id="scholarshipDetails" style="display:none" class="grid grid-2" style="gap:16px; margin-top:4px">
+          <div class="field">
+            <label>Type of Scholarship Sought</label>
+            <div class="check-group">
+              <label class="check-chip" onclick="toggleCheck(this)"><input type="checkbox"/>Merit-based</label>
+              <label class="check-chip" onclick="toggleCheck(this)"><input type="checkbox"/>Need-based</label>
+              <label class="check-chip" onclick="toggleCheck(this)"><input type="checkbox"/>Sports</label>
+              <label class="check-chip" onclick="toggleCheck(this)"><input type="checkbox"/>SC/ST/OBC</label>
+              <label class="check-chip" onclick="toggleCheck(this)"><input type="checkbox"/>Defence Quota</label>
+            </div>
+          </div>
+          <div class="field">
+            <label>Any Existing Scholarship / Govt. Scheme</label>
+            <input type="text" placeholder="e.g. NSP, PM-YASASVI, State Scholarship" />
+          </div>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Require Hostel Accommodation?</div>
+            <div class="toggle-sub">Separate boys and girls hostels available on campus</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="togHostel" onchange="toggleSection('hostelDetails', this.checked)"/>
+            <div class="toggle-slider"></div>
+          </label>
+        </div>
+        <div id="hostelDetails" style="display:none" class="grid grid-2" style="gap:16px;margin-top:4px">
+          <div class="field">
+            <label>Room Preference</label>
+            <div class="radio-group">
+              <label class="radio-chip" onclick="selectChip(this,'room')"><input type="radio" name="room" value="Single"/>Single</label>
+              <label class="radio-chip" onclick="selectChip(this,'room')"><input type="radio" name="room" value="Double"/>Double</label>
+              <label class="radio-chip" onclick="selectChip(this,'room')"><input type="radio" name="room" value="Triple"/>Triple</label>
+            </div>
+          </div>
+          <div class="field">
+            <label>Dietary Preference</label>
+            <div class="radio-group">
+              <label class="radio-chip" onclick="selectChip(this,'diet')"><input type="radio" name="diet" value="Veg"/>Vegetarian</label>
+              <label class="radio-chip" onclick="selectChip(this,'diet')"><input type="radio" name="diet" value="NonVeg"/>Non-Veg</label>
+            </div>
+          </div>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Require Education Loan Assistance?</div>
+            <div class="toggle-sub">We assist with documentation for bank education loans</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox"/>
+            <div class="toggle-slider"></div>
+          </label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">NCC / NSS / Sports Achievements?</div>
+            <div class="toggle-sub">May qualify for additional benefits</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" onchange="toggleSection('nccDetails', this.checked)"/>
+            <div class="toggle-slider"></div>
+          </label>
+        </div>
+        <div id="nccDetails" style="display:none">
+          <textarea placeholder="Describe your NCC / NSS / Sports achievements and certifications..." rows="3"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <div class="card-title">🔎 How Did You Hear About Us?</div>
+      <div class="check-group">
+        <label class="check-chip" onclick="toggleCheck(this)"><input type="checkbox"/>Google Search</label>
+        <label class="check-chip" onclick="toggleCheck(this)"><input type="checkbox"/>Instagram / YouTube</label>
+        <label class="check-chip" onclick="toggleCheck(this)"><input type="checkbox"/>JEE / Entrance Portal</label>
+        <label class="check-chip" onclick="toggleCheck(this)"><input type="checkbox"/>School / Teacher</label>
+        <label class="check-chip" onclick="toggleCheck(this)"><input type="checkbox"/>Friend / Senior</label>
+        <label class="check-chip" onclick="toggleCheck(this)"><input type="checkbox"/>Education Fair</label>
+        <label class="check-chip" onclick="toggleCheck(this)"><input type="checkbox"/>Newspaper / TV</label>
+        <label class="check-chip" onclick="toggleCheck(this)"><input type="checkbox"/>College Counsellor</label>
+        <label class="check-chip" onclick="toggleCheck(this)"><input type="checkbox"/>Alumni Reference</label>
+      </div>
+    </div>
+
+    <div class="form-nav">
+      <button class="btn btn-secondary" onclick="prevStep(5)">← Back</button>
+      <button class="btn btn-primary" onclick="nextStep(5)">Next: Documents →</button>
+    </div>
+  </div>
+
+  <!-- ══ STEP 6: Documents ══ -->
+  <div class="form-section" id="step-6">
+    <div class="section-header">
+      <div class="section-icon" style="background:rgba(139,92,246,0.1)">📁</div>
+      <div>
+        <h3>Document Upload</h3>
+        <p>Upload scanned copies of required documents (PDF / JPG / PNG, max 5MB each)</p>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <span class="icon">⚠️</span>
+      <p>Documents marked <strong>Required</strong> must be uploaded before final submission. Provisional uploads are accepted for students awaiting results — originals must be verified at the time of admission.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📄 Identity & Address Proof</div>
+      <div class="grid grid-2" style="gap:20px">
+        <div class="field">
+          <label>Aadhar Card <span class="req">*</span></label>
+          <div class="file-zone" id="zone-aadhar" ondragover="dragOver(event,this)" ondragleave="dragLeave(this)" ondrop="dropFile(event,this,'list-aadhar')">
+            <input type="file" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile(this,'list-aadhar')"/>
+            <div class="upload-icon">🪪</div>
+            <p><strong>Click to upload</strong> or drag & drop</p>
+            <div class="file-types">PDF, JPG, PNG — Max 5MB</div>
+          </div>
+          <div class="file-list" id="list-aadhar"></div>
+        </div>
+        <div class="field">
+          <label>Passport Size Photograph <span class="req">*</span></label>
+          <div class="file-zone" ondragover="dragOver(event,this)" ondragleave="dragLeave(this)" ondrop="dropFile(event,this,'list-photo')">
+            <input type="file" accept=".jpg,.jpeg,.png" onchange="handleFile(this,'list-photo')"/>
+            <div class="upload-icon">📷</div>
+            <p><strong>Click to upload</strong> recent photo</p>
+            <div class="file-types">JPG, PNG — Max 2MB — White background</div>
+          </div>
+          <div class="file-list" id="list-photo"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <div class="card-title">🎓 Academic Certificates</div>
+      <div class="grid grid-2" style="gap:20px">
+        <div class="field">
+          <label>10th Marksheet <span class="req">*</span></label>
+          <div class="file-zone" ondragover="dragOver(event,this)" ondragleave="dragLeave(this)" ondrop="dropFile(event,this,'list-m10')">
+            <input type="file" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile(this,'list-m10')"/>
+            <div class="upload-icon">📋</div>
+            <p><strong>Click to upload</strong></p>
+            <div class="file-types">PDF, JPG, PNG — Max 5MB</div>
+          </div>
+          <div class="file-list" id="list-m10"></div>
+        </div>
+        <div class="field">
+          <label>12th Marksheet / Hall Ticket <span class="req">*</span></label>
+          <div class="file-zone" ondragover="dragOver(event,this)" ondragleave="dragLeave(this)" ondrop="dropFile(event,this,'list-m12')">
+            <input type="file" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile(this,'list-m12')"/>
+            <div class="upload-icon">📋</div>
+            <p><strong>Click to upload</strong> (Provisional if result awaited)</p>
+            <div class="file-types">PDF, JPG, PNG — Max 5MB</div>
+          </div>
+          <div class="file-list" id="list-m12"></div>
+        </div>
+        <div class="field">
+          <label>Transfer Certificate (TC)</label>
+          <div class="file-zone" ondragover="dragOver(event,this)" ondragleave="dragLeave(this)" ondrop="dropFile(event,this,'list-tc')">
+            <input type="file" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile(this,'list-tc')"/>
+            <div class="upload-icon">📄</div>
+            <p><strong>Click to upload</strong></p>
+            <div class="file-types">PDF, JPG, PNG</div>
+          </div>
+          <div class="file-list" id="list-tc"></div>
+        </div>
+        <div class="field">
+          <label>Conduct / Character Certificate</label>
+          <div class="file-zone" ondragover="dragOver(event,this)" ondragleave="dragLeave(this)" ondrop="dropFile(event,this,'list-cc')">
+            <input type="file" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile(this,'list-cc')"/>
+            <div class="upload-icon">📄</div>
+            <p><strong>Click to upload</strong></p>
+            <div class="file-types">PDF, JPG, PNG</div>
+          </div>
+          <div class="file-list" id="list-cc"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <div class="card-title">🏆 Entrance Exam & Other Docs</div>
+      <div class="grid grid-2" style="gap:20px">
+        <div class="field">
+          <label>JEE / State Exam Scorecard</label>
+          <div class="file-zone" ondragover="dragOver(event,this)" ondragleave="dragLeave(this)" ondrop="dropFile(event,this,'list-jee')">
+            <input type="file" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile(this,'list-jee')"/>
+            <div class="upload-icon">📊</div>
+            <p><strong>Click to upload</strong></p>
+            <div class="file-types">PDF, JPG, PNG</div>
+          </div>
+          <div class="file-list" id="list-jee"></div>
+        </div>
+        <div class="field">
+          <label>Caste / Category Certificate (if applicable)</label>
+          <div class="file-zone" ondragover="dragOver(event,this)" ondragleave="dragLeave(this)" ondrop="dropFile(event,this,'list-caste')">
+            <input type="file" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile(this,'list-caste')"/>
+            <div class="upload-icon">📄</div>
+            <p><strong>Click to upload</strong></p>
+            <div class="file-types">PDF, JPG, PNG</div>
+          </div>
+          <div class="file-list" id="list-caste"></div>
+        </div>
+        <div class="field">
+          <label>Income Certificate (for scholarship)</label>
+          <div class="file-zone" ondragover="dragOver(event,this)" ondragleave="dragLeave(this)" ondrop="dropFile(event,this,'list-income')">
+            <input type="file" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile(this,'list-income')"/>
+            <div class="upload-icon">📄</div>
+            <p><strong>Click to upload</strong></p>
+            <div class="file-types">PDF, JPG, PNG</div>
+          </div>
+          <div class="file-list" id="list-income"></div>
+        </div>
+        <div class="field">
+          <label>Migration Certificate (if from different board)</label>
+          <div class="file-zone" ondragover="dragOver(event,this)" ondragleave="dragLeave(this)" ondrop="dropFile(event,this,'list-mig')">
+            <input type="file" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile(this,'list-mig')"/>
+            <div class="upload-icon">📄</div>
+            <p><strong>Click to upload</strong></p>
+            <div class="file-types">PDF, JPG, PNG</div>
+          </div>
+          <div class="file-list" id="list-mig"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-nav">
+      <button class="btn btn-secondary" onclick="prevStep(6)">← Back</button>
+      <button class="btn btn-primary" onclick="nextStep(6)">Next: Review & Submit →</button>
+    </div>
+  </div>
+
+  <!-- ══ STEP 7: Review & Submit ══ -->
+  <div class="form-section" id="step-7">
+    <div class="section-header">
+      <div class="section-icon" style="background:rgba(16,185,129,0.1)">✅</div>
+      <div>
+        <h3>Review & Declaration</h3>
+        <p>Verify your details and submit the enquiry form</p>
+      </div>
+    </div>
+
+    <div class="card" id="reviewCard">
+      <div class="card-title">📋 Summary Preview</div>
+      <div id="reviewSummary" style="font-size:13px;color:var(--text-dim);line-height:2">
+        <!-- Filled by JS -->
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <div class="card-title">📋 Additional Queries</div>
+      <div class="field">
+        <label>Questions or Special Requirements (Optional)</label>
+        <textarea id="queries" placeholder="Any specific questions about admissions, fee structure, placements, campus facilities, or anything you'd like us to address..." rows="4" oninput="countChars(this,'qCount',500)"></textarea>
+        <div class="char-counter"><span id="qCount">0</span>/500</div>
+      </div>
+      <div class="field" style="margin-top:16px">
+        <label>Preferred Contact Time</label>
+        <div class="radio-group">
+          <label class="radio-chip" onclick="selectChip(this,'contact')"><input type="radio" name="contact" value="Morning"/>Morning (9–12)</label>
+          <label class="radio-chip" onclick="selectChip(this,'contact')"><input type="radio" name="contact" value="Afternoon"/>Afternoon (12–4)</label>
+          <label class="radio-chip" onclick="selectChip(this,'contact')"><input type="radio" name="contact" value="Evening"/>Evening (4–7)</label>
+          <label class="radio-chip" onclick="selectChip(this,'contact')"><input type="radio" name="contact" value="Anytime"/>Anytime</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <div class="card-title">⚖️ Declaration</div>
+      <div class="declaration-box">
+        I, the applicant / parent / guardian, hereby declare that the information provided in this Admission Enquiry Form is true, complete, and accurate to the best of my knowledge and belief. I understand that any false statement or misrepresentation may result in the rejection of my application or cancellation of admission at any stage.
+
+        I agree to abide by the rules and regulations of the Institute of Engineering & Computing. I acknowledge that submitting this form does not guarantee admission and that all offers of admission are subject to fulfilling eligibility criteria, availability of seats, and verification of original documents.
+
+        I consent to the Institute contacting me via the provided mobile number and email address for the purpose of admission-related communication. I have read and understood the fee structure, refund policy, and admission procedure published on the institute's official website.
+
+        I am aware that admission to reserved category seats requires submission of valid caste / income certificates issued by the competent authority. I confirm that the uploaded documents are genuine and I take full responsibility for their authenticity.
+      </div>
+      <div class="check-line">
+        <div class="custom-check" id="chk1" onclick="toggleCustomCheck('chk1')"></div>
+        <p style="font-size:13px;color:var(--text-dim)">I have read and agree to the above declaration and the Institute's <a href="#" style="color:var(--accent)">Terms & Conditions</a> and <a href="#" style="color:var(--accent)">Privacy Policy</a>. <span style="color:var(--accent3)">*</span></p>
+      </div>
+      <div class="check-line" style="margin-top:12px">
+        <div class="custom-check" id="chk2" onclick="toggleCustomCheck('chk2')"></div>
+        <p style="font-size:13px;color:var(--text-dim)">I consent to receive communications (SMS, email, WhatsApp) regarding my enquiry and admission process.</p>
+      </div>
+    </div>
+
+    <div class="form-nav">
+      <button class="btn btn-secondary" onclick="prevStep(7)">← Back</button>
+      <button class="btn btn-success" onclick="submitForm()">🎓 Submit Enquiry</button>
+    </div>
+  </div>
+
+  <!-- ══ SUCCESS SCREEN ══ -->
+  <div class="success-screen" id="successScreen">
+    <div class="success-circle">🎉</div>
+    <h2>Enquiry Submitted Successfully!</h2>
+    <p>Thank you for your interest in the Institute of Engineering & Computing. Our admissions team will reach out to you within <strong>1–2 working days</strong>.</p>
+    <div class="enquiry-id" id="enquiryId">EQ-2025-XXXXXX</div>
+    <p style="font-size:13px">Save this Enquiry ID for future reference. A confirmation has been sent to your registered email.</p>
+    <div class="next-steps">
+      <div class="next-step">
+        <div class="ns-icon">📞</div>
+        <h4>Counselling Call</h4>
+        <p>Our advisor will call at your preferred time</p>
+      </div>
+      <div class="next-step">
+        <div class="ns-icon">📅</div>
+        <h4>Campus Visit</h4>
+        <p>Schedule an open day visit to explore the campus</p>
+      </div>
+      <div class="next-step">
+        <div class="ns-icon">📧</div>
+        <h4>Email Brochure</h4>
+        <p>Detailed brochure sent to your email shortly</p>
+      </div>
+    </div>
+    <div style="margin-top:36px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="window.print()">🖨️ Print Confirmation</button>
+      <button class="btn btn-secondary" onclick="resetForm()">Submit Another Enquiry</button>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<script>
+  // ── State ──
+  let currentStep = 1;
+  const totalSteps = 7;
+  const checks = { chk1: false, chk2: false };
+  const selectedBranches = [];
+
+  // ── Step Navigation ──
+  function goToStep(n) {
+    document.getElementById('step-' + currentStep)?.classList.remove('active');
+    document.querySelectorAll('.step-tab').forEach(t => {
+      t.classList.remove('active');
+      if (parseInt(t.dataset.step) < n) t.classList.add('completed');
+      else t.classList.remove('completed');
+    });
+    currentStep = n;
+    document.getElementById('step-' + n)?.classList.add('active');
+    document.querySelector(`.step-tab[data-step="${n}"]`).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (n === 7) buildReview();
+  }
+
+  function nextStep(current) {
+    if (!validateStep(current)) return;
+    if (current < totalSteps) goToStep(current + 1);
+  }
+
+  function prevStep(current) {
+    if (current > 1) goToStep(current - 1);
+  }
+
+  // ── Validation ──
+  function validateStep(step) {
+    let valid = true;
+    const rules = {
+      1: [
+        { id:'firstName', check: v => v.trim().length > 0 },
+        { id:'lastName', check: v => v.trim().length > 0 },
+        { id:'dob', check: v => v !== '' },
+        { id:'gender', radio: true, name:'gender' },
+        { id:'aadhar', check: v => /^\d{12}$/.test(v.replace(/\s|-/g,'')) },
+        { id:'mobile', check: v => /^[\d\s\+\-]{10,15}$/.test(v) },
+        { id:'email', check: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) },
+        { id:'address', check: v => v.trim().length > 5 },
+        { id:'state', check: v => v !== '' },
+        { id:'pin', check: v => /^\d{6}$/.test(v) },
+        { id:'category', check: v => v !== '' },
+      ],
+      2: [
+        { id:'board10', check: v => v !== '' },
+        { id:'year10', check: v => v !== '' },
+        { id:'pct10', check: v => parseFloat(v) > 0 },
+        { id:'board12', check: v => v !== '' },
+        { id:'school12', check: v => v.trim().length > 0 },
+        { id:'year12', check: v => v !== '' },
+        { id:'pct12', check: v => parseFloat(v) > 0 },
+        { id:'stream', radio: true, name:'stream' },
+      ],
+      5: [
+        { id:'fatherName', check: v => v.trim().length > 0 },
+        { id:'fatherMobile', check: v => /^[\d\s\+\-]{10,15}$/.test(v) },
+        { id:'motherName', check: v => v.trim().length > 0 },
+      ],
+      7: [
+        { id:'chk1', customCheck: true },
+      ]
+    };
+
+    const stepRules = rules[step] || [];
+    stepRules.forEach(rule => {
+      let ok = true;
+      if (rule.radio) {
+        ok = !!document.querySelector(`input[name="${rule.name}"]:checked`);
+        const errEl = document.getElementById('err-' + rule.id);
+        if (errEl) { errEl.classList.toggle('visible', !ok); }
+      } else if (rule.customCheck) {
+        ok = checks[rule.id];
+        if (!ok) alert('Please accept the declaration to submit.');
+      } else {
+        const el = document.getElementById(rule.id);
+        if (el) {
+          ok = rule.check(el.value);
+          el.classList.toggle('error', !ok);
+          const errEl = document.getElementById('err-' + rule.id);
+          if (errEl) errEl.classList.toggle('visible', !ok);
+        }
+      }
+      if (!ok) valid = false;
+    });
+
+    return valid;
+  }
+
+  // ── Radio Chips ──
+  function selectChip(el, group) {
+    document.querySelectorAll(`.radio-chip`).forEach(c => {
+      if (c.querySelector(`input[name="${group}"]`)) c.classList.remove('selected');
+    });
+    el.classList.add('selected');
+  }
+
+  function toggleCheck(el) {
+    el.classList.toggle('selected');
+    const inp = el.querySelector('input[type="checkbox"]');
+    if (inp) inp.checked = el.classList.contains('selected');
+  }
+
+  // ── Toggle sections ──
+  function toggleSection(id, show) {
+    const el = document.getElementById(id);
+    if (el) { el.style.display = show ? 'grid' : 'none'; }
+  }
+
+  // ── Custom checkboxes ──
+  function toggleCustomCheck(id) {
+    const el = document.getElementById(id);
+    checks[id] = !checks[id];
+    el.classList.toggle('checked', checks[id]);
+  }
+
+  // ── Score bar ──
+  function updateBar(id, val) {
+    const bar = document.getElementById(id);
+    if (bar) bar.style.width = Math.min(100, Math.max(0, parseFloat(val)||0)) + '%';
+  }
+
+  // ── Char counter ──
+  function countChars(el, countId, max) {
+    const c = document.getElementById(countId);
+    if (c) c.textContent = Math.min(el.value.length, max);
+    if (el.value.length > max) el.value = el.value.substring(0, max);
+  }
+
+  // ── Branch selection ──
+  function toggleBranch(card) {
+    const branch = card.dataset.branch;
+    const idx = selectedBranches.indexOf(branch);
+    if (idx > -1) {
+      selectedBranches.splice(idx, 1);
+      card.classList.remove('selected');
+    } else if (selectedBranches.length < 5) {
+      selectedBranches.push(branch);
+      card.classList.add('selected');
+    } else {
+      card.style.animation = 'shake 0.3s';
+      setTimeout(() => card.style.animation = '', 400);
+      return;
+    }
+    updatePrefList();
+  }
+
+  function updatePrefList() {
+    const list = document.getElementById('prefList');
+    const hint = document.getElementById('prefHint');
+    if (selectedBranches.length === 0) {
+      hint.style.display = 'block';
+      list.innerHTML = '';
+      return;
+    }
+    hint.style.display = 'none';
+    list.innerHTML = selectedBranches.map((b, i) => {
+      const card = document.querySelector(`.branch-card[data-branch="${b}"]`);
+      const icon = card?.querySelector('.branch-icon')?.textContent || '⚙️';
+      const name = card?.querySelector('.branch-name')?.textContent || b;
+      return `<div class="pref-item">
+        <div class="pref-rank">${i+1}</div>
+        <span style="font-size:18px">${icon}</span>
+        <span style="font-size:14px;color:var(--text)">${name}</span>
+        <button onclick="removeBranch('${b}')" style="margin-left:auto;background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px">×</button>
+      </div>`;
+    }).join('');
+  }
+
+  function removeBranch(branch) {
+    const card = document.querySelector(`.branch-card[data-branch="${branch}"]`);
+    if (card) card.classList.remove('selected');
+    const idx = selectedBranches.indexOf(branch);
+    if (idx > -1) selectedBranches.splice(idx, 1);
+    updatePrefList();
+  }
+
+  // ── File upload ──
+  function handleFile(input, listId) {
+    const list = document.getElementById(listId);
+    Array.from(input.files).forEach(f => {
+      const tag = document.createElement('div');
+      tag.className = 'file-tag';
+      tag.innerHTML = `📎 ${f.name} <button onclick="this.parentElement.remove()">×</button>`;
+      list.appendChild(tag);
+    });
+  }
+
+  function dragOver(e, zone) { e.preventDefault(); zone.classList.add('drag-over'); }
+  function dragLeave(zone) { zone.classList.remove('drag-over'); }
+  function dropFile(e, zone, listId) {
+    e.preventDefault(); zone.classList.remove('drag-over');
+    const list = document.getElementById(listId);
+    Array.from(e.dataTransfer.files).forEach(f => {
+      const tag = document.createElement('div');
+      tag.className = 'file-tag';
+      tag.innerHTML = `📎 ${f.name} <button onclick="this.parentElement.remove()">×</button>`;
+      list.appendChild(tag);
+    });
+  }
+
+  // ── Build Review ──
+  function buildReview() {
+    const g = id => { const el = document.getElementById(id); return el ? el.value : '—'; };
+    const r = n => { const el = document.querySelector(`input[name="${n}"]:checked`); return el ? el.value : '—'; };
+    const branches = selectedBranches.length ? selectedBranches.join(', ') : '—';
+    document.getElementById('reviewSummary').innerHTML = `
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 30px">
+        ${row('Full Name', `${g('firstName')} ${g('middleName')} ${g('lastName')}`)}
+        ${row('Date of Birth', g('dob'))}
+        ${row('Gender', r('gender'))}
+        ${row('Mobile', g('mobile'))}
+        ${row('Email', g('email'))}
+        ${row('Category', g('category'))}
+        ${row('10th Board', g('board10'))}
+        ${row('10th %', g('pct10') + '%')}
+        ${row('12th Board', g('board12'))}
+        ${row('12th %', g('pct12') + '%')}
+        ${row('Stream', r('stream'))}
+        ${row('JEE Score', g('jeeScore') || '—')}
+        ${row('Branch Preferences', branches)}
+        ${row('State', g('state'))}
+        ${row('Father\'s Name', g('fatherName'))}
+      </div>`;
+  }
+
+  function row(label, value) {
+    return `<div><span style="color:var(--text-muted);font-size:12px;text-transform:uppercase;letter-spacing:0.05em">${label}</span><br><span style="color:var(--text);font-weight:500">${value || '—'}</span></div>`;
+  }
+
+  // ── Submit ──
+  function submitForm() {
+    if (!checks.chk1) { alert('Please accept the declaration before submitting.'); return; }
+    const id = 'EQ-2025-' + Math.random().toString(36).substr(2,6).toUpperCase();
+    document.getElementById('enquiryId').textContent = id;
+    document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
+    document.querySelector('.progress-wrapper').style.display = 'none';
+    document.getElementById('successScreen').classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function resetForm() {
+    location.reload();
+  }
+
+  // ── Toggle exam details ──
+  function toggleExam(id, show) {
+    const el = document.getElementById(id);
+    if (el) el.style.display = show ? 'block' : 'none';
+  }
+
+  // ── Shake animation ──
+  const style = document.createElement('style');
+  style.textContent = `@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-4px)}40%,80%{transform:translateX(4px)}}`;
+  document.head.appendChild(style);
+
+  // ── Aadhar formatting ──
+  document.getElementById('aadhar')?.addEventListener('input', function() {
+    let v = this.value.replace(/\D/g,'').substr(0,12);
+    this.value = v.replace(/(\d{4})(?=\d)/g,'$1 ');
+  });
+</script>
+
+<!-- ══════════════════════════════════════════
+     AI ADMISSION COUNSELLOR CHATBOT
+══════════════════════════════════════════ -->
+
+<style>
+/* ── FAB BUTTON ── */
+#chatFab {
+  position: fixed; bottom: 28px; right: 28px; z-index: 9999;
+  width: 62px; height: 62px; border-radius: 50%;
+  background: linear-gradient(135deg, #2563eb, #0891b2);
+  border: none; cursor: pointer;
+  box-shadow: 0 6px 30px rgba(37,99,235,0.5), 0 0 0 0 rgba(37,99,235,0.4);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; transition: transform 0.3s;
+  animation: fabPulse 3s infinite;
+}
+#chatFab:hover { transform: scale(1.1); }
+#chatFab .fab-badge {
+  position: absolute; top: -4px; right: -4px;
+  background: #f59e0b; color: #fff;
+  width: 20px; height: 20px; border-radius: 50%;
+  font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid var(--bg);
+}
+@keyframes fabPulse {
+  0%,100%  { box-shadow: 0 6px 30px rgba(37,99,235,0.5), 0 0 0 0 rgba(37,99,235,0.3); }
+  50%      { box-shadow: 0 6px 30px rgba(37,99,235,0.5), 0 0 0 12px rgba(37,99,235,0); }
+}
+
+/* ── CHAT WINDOW ── */
+#chatWindow {
+  position: fixed; bottom: 106px; right: 28px; z-index: 9998;
+  width: 390px; height: 580px;
+  background: #0d111d;
+  border: 1px solid rgba(59,130,246,0.25);
+  border-radius: 20px;
+  display: flex; flex-direction: column;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04);
+  transform: scale(0.85) translateY(20px);
+  opacity: 0; pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  overflow: hidden;
+}
+#chatWindow.open {
+  transform: scale(1) translateY(0);
+  opacity: 1; pointer-events: all;
+}
+
+/* ── CHAT HEADER ── */
+.chat-header {
+  background: linear-gradient(135deg, #1a2744 0%, #0f1a2e 100%);
+  border-bottom: 1px solid rgba(59,130,246,0.15);
+  padding: 16px 18px;
+  display: flex; align-items: center; gap: 12px;
+  flex-shrink: 0;
+}
+.chat-avatar {
+  width: 42px; height: 42px; border-radius: 50%;
+  background: linear-gradient(135deg, #2563eb, #06b6d4);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
+  box-shadow: 0 0 16px rgba(37,99,235,0.4);
+  position: relative;
+}
+.chat-avatar::after {
+  content: '';
+  position: absolute; bottom: 1px; right: 1px;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: #10b981; border: 2px solid #0d111d;
+}
+.chat-meta { flex: 1; }
+.chat-meta h4 { font-size: 14px; font-weight: 600; color: #fff; }
+.chat-meta p  { font-size: 11px; color: #64748b; margin-top: 2px; }
+.chat-status  { display: flex; align-items: center; gap: 5px; }
+.chat-status-dot { width: 6px; height: 6px; border-radius: 50%; background: #10b981; animation: pulse 2s infinite; }
+.chat-status span { font-size: 11px; color: #10b981; }
+.chat-close {
+  background: rgba(255,255,255,0.06); border: none; color: #94a3b8;
+  width: 30px; height: 30px; border-radius: 8px; cursor: pointer;
+  font-size: 16px; display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.chat-close:hover { background: rgba(255,255,255,0.12); color: #fff; }
+
+/* ── QUICK SUGGESTIONS ── */
+.quick-bar {
+  padding: 10px 14px 0;
+  display: flex; gap: 7px; flex-wrap: nowrap;
+  overflow-x: auto; scrollbar-width: none; flex-shrink: 0;
+}
+.quick-bar::-webkit-scrollbar { display: none; }
+.quick-chip {
+  background: rgba(59,130,246,0.1);
+  border: 1px solid rgba(59,130,246,0.2);
+  border-radius: 100px; padding: 5px 12px;
+  font-size: 11.5px; color: #93c5fd; white-space: nowrap;
+  cursor: pointer; transition: all 0.2s; font-family: 'DM Sans',sans-serif;
+}
+.quick-chip:hover {
+  background: rgba(59,130,246,0.2); border-color: rgba(59,130,246,0.4);
+  color: #bfdbfe;
+}
+
+/* ── MESSAGES AREA ── */
+.chat-messages {
+  flex: 1; overflow-y: auto; padding: 14px 16px;
+  display: flex; flex-direction: column; gap: 14px;
+  scroll-behavior: smooth;
+}
+.chat-messages::-webkit-scrollbar { width: 3px; }
+.chat-messages::-webkit-scrollbar-thumb { background: rgba(59,130,246,0.2); border-radius: 3px; }
+
+/* Message bubbles */
+.msg { display: flex; gap: 10px; animation: msgIn 0.3s ease; max-width: 100%; }
+.msg.user { flex-direction: row-reverse; }
+@keyframes msgIn {
+  from { opacity:0; transform: translateY(8px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+
+.msg-icon {
+  width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 14px;
+  margin-top: 2px;
+}
+.msg.bot .msg-icon { background: linear-gradient(135deg,#2563eb,#06b6d4); }
+.msg.user .msg-icon { background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.25); }
+
+.msg-bubble {
+  max-width: 78%; padding: 11px 14px; border-radius: 14px;
+  font-size: 13.5px; line-height: 1.65; word-break: break-word;
+}
+.msg.bot .msg-bubble {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #e2e8f0; border-radius: 4px 14px 14px 14px;
+}
+.msg.user .msg-bubble {
+  background: linear-gradient(135deg, #1d4ed8, #1e40af);
+  color: #fff; border-radius: 14px 4px 14px 14px;
+}
+
+/* Formatted bot message */
+.msg-bubble strong { color: #93c5fd; font-weight: 600; }
+.msg-bubble ul { margin: 6px 0 4px 14px; }
+.msg-bubble li { margin-bottom: 3px; color: #cbd5e1; }
+.msg-bubble .tag {
+  display: inline-block; background: rgba(59,130,246,0.15);
+  border: 1px solid rgba(59,130,246,0.25); border-radius: 4px;
+  padding: 1px 7px; font-size: 11.5px; color: #93c5fd; margin: 2px 2px;
+}
+.msg-time { font-size: 10px; color: #475569; margin-top: 5px; text-align: right; }
+
+/* Typing indicator */
+.typing-bubble {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 4px 14px 14px 14px;
+  padding: 12px 16px; display: flex; gap: 5px; align-items: center;
+}
+.typing-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #3b82f6; animation: typingBounce 1.2s infinite;
+}
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typingBounce {
+  0%,60%,100% { transform: translateY(0); opacity:0.4; }
+  30%          { transform: translateY(-6px); opacity:1; }
+}
+
+/* ── INPUT AREA ── */
+.chat-input-wrap {
+  padding: 12px 14px 16px; border-top: 1px solid rgba(255,255,255,0.06);
+  flex-shrink: 0;
+}
+.chat-input-row {
+  display: flex; gap: 8px; align-items: flex-end;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 14px; padding: 8px 10px 8px 14px;
+  transition: border-color 0.2s;
+}
+.chat-input-row:focus-within { border-color: rgba(59,130,246,0.4); }
+#chatInput {
+  flex: 1; background: none; border: none; outline: none;
+  color: #e2e8f0; font-family: 'DM Sans',sans-serif; font-size: 13.5px;
+  resize: none; max-height: 100px; line-height: 1.5;
+  scrollbar-width: none;
+}
+#chatInput::placeholder { color: #475569; }
+#chatInput::-webkit-scrollbar { display: none; }
+#chatSend {
+  width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+  background: linear-gradient(135deg,#2563eb,#1d4ed8);
+  border: none; cursor: pointer; color: #fff; font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+#chatSend:hover { transform: scale(1.08); box-shadow: 0 4px 12px rgba(37,99,235,0.4); }
+#chatSend:disabled { opacity:0.4; cursor:not-allowed; transform:none; }
+.chat-hint { font-size: 10.5px; color: #334155; text-align: center; margin-top: 8px; }
+
+/* Mobile */
+@media (max-width:480px) {
+  #chatWindow { width: calc(100vw - 24px); right: 12px; bottom: 92px; height: 72vh; }
+  #chatFab { bottom: 16px; right: 16px; }
+}
+</style>
+
+<!-- FAB -->
+<button id="chatFab" onclick="toggleChat()" title="Ask our AI Counsellor">
+  🎓
+  <div class="fab-badge" id="fabBadge">1</div>
+</button>
+
+<!-- CHAT WINDOW -->
+<div id="chatWindow">
+  <!-- Header -->
+  <div class="chat-header">
+    <div class="chat-avatar">🤖</div>
+    <div class="chat-meta">
+      <h4>Arya — AI Counsellor</h4>
+      <div class="chat-status"><div class="chat-status-dot"></div><span>Online · IEC Admissions</span></div>
+    </div>
+    <button class="chat-close" onclick="toggleChat()">✕</button>
+  </div>
+
+  <!-- Quick chips -->
+  <div class="quick-bar" id="quickBar">
+    <div class="quick-chip" onclick="sendQuick(this)">📋 Eligibility</div>
+    <div class="quick-chip" onclick="sendQuick(this)">💰 Fee Structure</div>
+    <div class="quick-chip" onclick="sendQuick(this)">🏆 Placements</div>
+    <div class="quick-chip" onclick="sendQuick(this)">📅 Last Date</div>
+    <div class="quick-chip" onclick="sendQuick(this)">🏗️ Hostel</div>
+    <div class="quick-chip" onclick="sendQuick(this)">🎓 Scholarships</div>
+    <div class="quick-chip" onclick="sendQuick(this)">⚙️ CSE vs ECE</div>
+    <div class="quick-chip" onclick="sendQuick(this)">📡 JEE Cutoff</div>
+  </div>
+
+  <!-- Messages -->
+  <div class="chat-messages" id="chatMessages"></div>
+
+  <!-- Input -->
+  <div class="chat-input-wrap">
+    <div class="chat-input-row">
+      <textarea id="chatInput" placeholder="Ask anything about admissions…" rows="1"
+        oninput="autoResize(this)" onkeydown="chatKeyDown(event)"></textarea>
+      <button id="chatSend" onclick="sendMessage()">➤</button>
+    </div>
+    <div class="chat-hint">Powered by Claude AI · Ask anything about IEC Engineering</div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+//  CHATBOT ENGINE
+// ══════════════════════════════════════════
+
+const SYSTEM_PROMPT = `You are Arya, the friendly and knowledgeable AI Admission Counsellor for IEC (Institute of Engineering & Computing). You help prospective B.Tech students and their parents with all admission-related queries.
+
+About IEC:
+- NAAC A++ Accredited autonomous institution
+- Offers 12 B.Tech branches: CSE, CSE (AI & ML), Data Science, IT, ECE, EEE, Mechanical, Civil, Chemical, Biotech, Aerospace, Cyber Security
+- 4-year full-time B.Tech programme
+- Lateral entry (2nd year) available for diploma holders
+- Intake: 2025–26 admissions open
+
+Fee Structure:
+- CSE / CSE-AI / DS / IT: ₹1,60,000 per year
+- ECE / EEE: ₹1,40,000 per year
+- ME / CE / ChE / BIO / AERO / Cyber: ₹1,20,000 per year
+- Hostel: ₹90,000–₹1,20,000 per year (room type dependent)
+- One-time admission fee: ₹25,000
+
+Eligibility:
+- 10+2 with PCM, minimum 60% aggregate (50% for SC/ST/OBC)
+- Valid JEE Main / KCET / MHT-CET / COMEDK score preferred
+- Lateral entry: Diploma with min 60% — direct 2nd year admission
+
+Scholarships:
+- Merit Scholarship: Top 10% PCM scorers — up to 50% fee waiver
+- Need-based: Family income < ₹3L — up to 30% waiver
+- SC/ST/OBC: Government scholarship schemes applicable
+- Sports: National/State level — up to ₹30,000/year
+- Defence ward: 20% concession
+
+Key Dates 2025–26:
+- Application deadline: 30 June 2025
+- Entrance exam / counselling: July 2025
+- Document verification: July–August 2025
+- Classes begin: 1st August 2025
+
+Placements:
+- 98% placement rate; avg package ₹7.2 LPA, highest ₹42 LPA
+- Top recruiters: TCS, Infosys, Wipro, Amazon, Bosch, L&T, Capgemini, Accenture, ISRO (internship)
+- Dedicated Training & Placement cell
+
+Campus facilities:
+- Wi-Fi campus, 24×7 library, advanced labs, sports complex
+- Boys & girls hostels (single/double/triple rooms)
+- Cafeteria, medical centre, transport, gym
+
+Contact:
+- Admissions helpline: 1800-XXX-XXXX (toll-free)
+- Email: admissions@iec.edu.in
+- Address: IEC Campus, Tech Park Road, Bengaluru - 560001
+
+Instructions:
+- Be warm, helpful, and encouraging
+- Give concise, well-structured answers using bullet points or short paragraphs
+- Use emojis sparingly to keep tone friendly
+- If asked something outside your knowledge, suggest contacting the admissions office
+- Never make up specific numbers not given above; say "please contact admissions for exact details"
+- If a student seems unsure between branches, ask about their interests and guide them
+- Always end with a follow-up question or offer to help more`;
+
+let chatHistory = [];
+let chatOpen = false;
+let isTyping = false;
+
+function toggleChat() {
+  chatOpen = !chatOpen;
+  document.getElementById('chatWindow').classList.toggle('open', chatOpen);
+  document.getElementById('fabBadge').style.display = 'none';
+  if (chatOpen && chatHistory.length === 0) {
+    setTimeout(showWelcome, 300);
+  }
+  if (chatOpen) setTimeout(() => document.getElementById('chatInput').focus(), 400);
+}
+
+function showWelcome() {
+  const welcome = `👋 Hi! I'm **Arya**, your AI Admission Counsellor at IEC.
+
+I can help you with:
+• Eligibility & admission process
+• Fee structure & scholarships
+• Branch selection & career scope
+• JEE / entrance exam cutoffs
+• Hostel, placements & campus life
+
+What would you like to know today? 😊`;
+  appendBotMessage(welcome);
+}
+
+function sendQuick(chip) {
+  const text = chip.textContent.replace(/^[^\s]+\s/, '');
+  document.getElementById('chatInput').value = text;
+  sendMessage();
+}
+
+async function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text || isTyping) return;
+
+  input.value = '';
+  input.style.height = 'auto';
+  appendUserMessage(text);
+  chatHistory.push({ role: 'user', content: text });
+
+  showTyping();
+  isTyping = true;
+  document.getElementById('chatSend').disabled = true;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: SYSTEM_PROMPT,
+        messages: chatHistory
+      })
+    });
+
+    const data = await response.json();
+    removeTyping();
+
+    if (data.content && data.content[0]) {
+      const reply = data.content[0].text;
+      chatHistory.push({ role: 'assistant', content: reply });
+      appendBotMessage(reply);
+    } else {
+      appendBotMessage("I'm having a little trouble right now. Please try again or call our helpline at **1800-XXX-XXXX**. 📞");
+    }
+  } catch (err) {
+    removeTyping();
+    appendBotMessage("⚡ Connection hiccup! Please check your internet and try again, or reach us at **admissions@iec.edu.in**.");
+  }
+
+  isTyping = false;
+  document.getElementById('chatSend').disabled = false;
+}
+
+function appendUserMessage(text) {
+  const msgs = document.getElementById('chatMessages');
+  const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const div = document.createElement('div');
+  div.className = 'msg user';
+  div.innerHTML = `
+    <div class="msg-icon">👤</div>
+    <div>
+      <div class="msg-bubble">${escapeHtml(text)}</div>
+      <div class="msg-time">${time}</div>
+    </div>`;
+  msgs.appendChild(div);
+  scrollToBottom();
+}
+
+function appendBotMessage(text) {
+  const msgs = document.getElementById('chatMessages');
+  const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const div = document.createElement('div');
+  div.className = 'msg bot';
+  div.innerHTML = `
+    <div class="msg-icon">🤖</div>
+    <div>
+      <div class="msg-bubble">${formatMessage(text)}</div>
+      <div class="msg-time">${time}</div>
+    </div>`;
+  msgs.appendChild(div);
+  scrollToBottom();
+}
+
+function showTyping() {
+  const msgs = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'msg bot'; div.id = 'typingIndicator';
+  div.innerHTML = `
+    <div class="msg-icon">🤖</div>
+    <div class="typing-bubble">
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+    </div>`;
+  msgs.appendChild(div);
+  scrollToBottom();
+}
+
+function removeTyping() {
+  document.getElementById('typingIndicator')?.remove();
+}
+
+function formatMessage(text) {
+  return text
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/`(.+?)`/g, '<span class="tag">$1</span>')
+    .replace(/^• (.+)$/gm, '<li>$1</li>')
+    .replace(/^- (.+)$/gm, '<li>$1</li>')
+    .replace(/^(\d+)\. (.+)$/gm, '<li><strong>$1.</strong> $2</li>')
+    .replace(/(<li>[\s\S]*?<\/li>)+/g, m => `<ul>${m}</ul>`)
+    .replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
+}
+
+function escapeHtml(t) {
+  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function scrollToBottom() {
+  const msgs = document.getElementById('chatMessages');
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 100) + 'px';
+}
+
+function chatKeyDown(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+}
+</script>
+</body>
+</html>
